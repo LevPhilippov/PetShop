@@ -1,0 +1,51 @@
+GET localhost:8080/app/api/v1/products
+###
+DELETE localhost:8080/app/api/v1/products/10
+###
+POST localhost:8080/app/api/v1/products
+content-type:application/json
+
+{
+  "price": 99999,
+  "buyers": []
+}
+###
+POST localhost:8080/app/api/v1/products
+content-type:application/json
+
+{
+  "id": 12,
+  "title": "Good Doggo",
+  "price": 99999,
+  "buyers": []
+}
+
+###
+PUT localhost:8080/app/api/v1/products
+content-type:application/json
+
+{
+  "id": 12,
+  "title": "Good Doggo",
+  "price": 999
+}
+###
+PUT localhost:8080/app/api/v1/products
+content-type:application/json
+
+{
+  "title": "Good Doggo",
+  "price": 999
+}
+###
+POST http://localhost:8080/app/ws HTTP/1.1
+Content-Type: text/xml; charset=utf-8
+
+<x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:gre="http://demomvc.filippov.lev/soap/catalog">
+    <x:Header/>
+    <x:Body>
+        <gre:getProductListRequest>
+            <gre:name>Frodo</gre:name>
+        </gre:getProductListRequest>
+    </x:Body>
+</x:Envelope>
