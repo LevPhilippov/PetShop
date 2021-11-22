@@ -14,6 +14,7 @@ CREATE TABLE orders(
     id bigserial,
     user_id BIGINT,
     price DECIMAL NOT NULL,
+    order_status VARCHAR(20),
     details_id BIGINT NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT orders_users_fk FOREIGN KEY (user_id) REFERENCES users (id),

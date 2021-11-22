@@ -26,6 +26,10 @@ public class Order {
     @Column(name = "price")
     BigDecimal price;
 
+    @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
+    OrderStatus orderStatus;
+
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "details_id")
     OrderDetails orderDetails;

@@ -1,9 +1,9 @@
 package lev.philippov.originmvc.soap;
 
-import lev.filippov.demomvc.soap.catalog.GetProductListRequest;
-import lev.filippov.demomvc.soap.catalog.GetProductListResponse;
-import lev.filippov.demomvc.soap.catalog.ProductDto;
-import lev.filippov.demomvc.soap.catalog.ProductsList;
+import lev.philippov.demomvc.soap.catalog.GetProductListRequest;
+import lev.philippov.demomvc.soap.catalog.GetProductListResponse;
+import lev.philippov.demomvc.soap.catalog.ProductDto;
+import lev.philippov.demomvc.soap.catalog.ProductsList;
 import lev.philippov.originmvc.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
