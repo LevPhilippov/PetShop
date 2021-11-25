@@ -1,5 +1,6 @@
 package lev.philippov.originmvc.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,17 +8,23 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "products")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1590847103740266540L;
-    
+
+    public Product(Long id, String title, BigDecimal price) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -36,6 +43,10 @@ public class Product implements Serializable {
         Product product = (Product) o;
         return id.equals(product.id);
     }
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    List<ProductImage> productImages;
 
     @Override
     public int hashCode() {

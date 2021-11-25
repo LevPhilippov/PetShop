@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -28,11 +29,12 @@ public class OrderDetails  implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
+    @Pattern(regexp = "\\S*@\\S*\\.\\w*(\\.\\w*)?", message = "Please enter correct email!")
     private String email;
 
-    @Column(name = "phone", nullable = false)
-    @Size(min = 11,max = 20, message = "Phone number hould be between 11 and 20 digits!")
+    @Column(name = "phone")
+//    @Size(min = 11,max = 20, message = "Phone number hould be between 11 and 20 digits!")
     private String phone;
 
     @OneToOne(mappedBy = "orderDetails")

@@ -15,10 +15,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.security.Principal;
-import java.util.function.Supplier;
 
 @Service
-public class CartService {
+public class OrderService {
 
     OrderRepository orderRepository;
     UserService userService;
@@ -41,18 +40,20 @@ public class CartService {
     }
 
     @Transactional
-    public void saveOrder(Cart cart, Principal principal, OrderDetails details) {
+    public Order saveOrder(Cart cart, Principal principal, OrderDetails details) {
         User user = userService.findByUsername(principal.getName());
         Order order = new Order(cart, user, details);
         orderRepository.save(order);
         orderConfirmationService.requestMQConfirmation(order.getId());
+        return order;
     }
 
     @Transactional
-    public void saveAnonymousOrder(Cart cart,OrderDetails details) {
+    public Order saveAnonymousOrder(Cart cart,OrderDetails details) {
         Order order = new Order(cart,null,details);
         orderRepository.save(order);
         orderConfirmationService.requestMQConfirmation(order.getId());
+        return order;
     }
 
     @Transactional
@@ -73,4 +74,7 @@ public class CartService {
     }
 
 
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId).orElseThrow(()-> new ServerException(String.format("Order with Id %d wasn't found!",orderId)));
+    }
 }

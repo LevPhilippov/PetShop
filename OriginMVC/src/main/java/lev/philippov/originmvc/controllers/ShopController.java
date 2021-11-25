@@ -89,7 +89,8 @@ public class ShopController {
     private void putProductsFromCookiesToAModel(HttpServletRequest request,Model model) {
         Cookie[] cookies = request.getCookies();
         Set<Long> shownProductIds = new HashSet<>();
-        assert (cookies != null);
+        if(cookies == null) return;
+//        assert (cookies != null);
         Arrays.stream(cookies).filter(cookie -> cookie.getName().matches("^prod_[0-9]*$"))
                 .sorted((o1, o2) -> Long.parseLong(o1.getName().split("_")[1])>Long.parseLong(o2.getName().split("_")[1]) ? 1 : -1)
                 .forEach(c -> shownProductIds.add(Long.parseLong(c.getValue())));

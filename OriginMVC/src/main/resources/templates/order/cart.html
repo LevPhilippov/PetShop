@@ -32,10 +32,10 @@
             <tbody>
             <tr th:each="item : ${cart.getOrderItems}">
                 <td th:text="${item.number}"></td>
-                <td th:text="${item.id}">Mark</td>
                 <td th:text="${item.product.title}">Otto</td>
                 <td th:text="${item.qty}">111</td>
                 <td th:text="${item.product.price}">111</td>
+                <td th:text="${item.product.id}">Mark</td>
                 <td>
                     <a class="btn btn-success" th:href="@{${#request.getServletPath()}+'/remove/' + ${item.getProduct().getId()}}">Remove</a>
                 </td>
@@ -47,8 +47,8 @@
                 <td th:text="''">111</td>
                 <td th:text="${cart.totalPrice}">111</td>
                 <td>
-                    <a class="btn btn-success" th:href="@{/cart/order}" th:text="#{order.finalize}" sec:authorize="isAuthenticated()">Make an order</a>
-                    <a class="btn btn-success" th:href="@{/cart/oneclick}" th:text="#{order.oneclick.finalize}">One click order</a>
+                    <a class="btn btn-success" th:href="@{/order}" th:text="#{order.finalize}" sec:authorize="isAuthenticated()">Make an order</a>
+                    <a class="btn btn-success" th:href="@{/order/oneclick}" th:text="#{order.oneclick.finalize}">One click order</a>
                 </td>
             </tr>
             </tbody>

@@ -3,9 +3,13 @@ package lev.philippov.originmvc.models;
 import lev.philippov.originmvc.utils.Cart;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,4 +52,16 @@ public class Order {
             o.setOrder(this);
         }
     }
+
+    @Version
+    @Column(name = "version")
+    Integer version;
+
+    @CreationTimestamp
+    @Column(name = "created")
+    LocalDateTime created;
+
+    @UpdateTimestamp
+    @Column
+    LocalDateTime updated;
 }

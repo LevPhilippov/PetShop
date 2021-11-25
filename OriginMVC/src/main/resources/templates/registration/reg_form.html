@@ -40,15 +40,15 @@
 
                     <div class="col-md-6">
                         <label for="inputUsername" class="form-label" th:text="#{reg.firstname}">Username</label>
-                        <input type="text" class="form-control" id="inputUsername" th:name="username">
+                        <input type="text" class="form-control" id="inputUsername" th:name="username" required>
                     </div>
                     <div class="col-md-6">
                         <label for="inputPass" class="form-label" th:text="#{reg.password}">Password</label>
-                        <input type="password" class="form-control" id="inputPass" th:name="password">
+                        <input type="password" class="form-control" id="inputPass" th:name="password" required>
                     </div>
                     <div class="col-12">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="roboCheck" name="roboCheck">
+                            <input class="form-check-input" type="checkbox" id="roboCheck" name="roboCheck" required>
                             <label class="form-check-label" for="roboCheck" th:text="#{reg.imnotarobot}">
                                 I'm not a robot.
                             </label>

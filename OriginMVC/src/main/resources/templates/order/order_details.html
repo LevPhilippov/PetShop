@@ -18,11 +18,12 @@
         <div class="col-auto display-6">Детали заказа</div>
     </div>
 
-    <form th:action="@{'/cart/order'}" method="post" th:object="${details}">
+    <form th:action="@{'/order'}" method="post" th:object="${details}">
         <div class="mb-3">
             <label for="firstname" class="form-label" th:text="#{order.firstname}"> First name</label>
             <input type="text" class="form-control" id="firstname" th:field="*{firstName}">
         </div>
+        <div th:replace="~{order/alerts :: alert(${firstNameAlert})}" th:if="${firstNameAlert != null}"/>
         <div class="mb-3">
             <label for="secondname" class="form-label" th:text="#{order.secondname}">Second name</label>
             <input type="text" class="form-control" id="secondname" th:field="*{lastName}">
@@ -31,14 +32,12 @@
             <label for="email" class="form-label" th:text="#{order.email}">Email</label>
             <input type="text" class="form-control" id="email" th:field="*{email}">
         </div>
+        <div th:replace="~{order/alerts :: alert(${emailAlert})}" th:if="${emailAlert != null}"/>
         <div class="mb-3">
             <label for="phone" class="form-label" th:text="#{order.phone}">Phone</label>
             <input type="text" class="form-control" id="phone" th:field="*{phone}">
         </div>
-<!--        <div class="mb-3 form-check">-->
-<!--            <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
-<!--            <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
-<!--        </div>-->
+        <div th:replace="~{order/alerts :: alert(${phoneAlert})}" th:if="${phoneAlert != null}"/>
         <button type="submit" class="btn btn-primary" th:text="#{order.finalize}">Submit</button>
     </form>
 

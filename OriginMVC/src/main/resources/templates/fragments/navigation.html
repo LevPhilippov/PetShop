@@ -32,7 +32,7 @@
                         <a class="nav-link" th:classappend="${pageName=='cart'?'active':''}" th:href="@{/cart}" th:text="#{nav.cart}">Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:classappend="${pageName=='Order details'?'active':''}" sec:authorize="isAuthenticated()" th:if="${pageName == 'Order details'}" th:href="@{/cart}" th:text="#{nav.order}">Order details</a>
+                        <a class="nav-link" th:classappend="${pageName=='Order details'?'active':''}" sec:authorize="isAuthenticated()" th:if="${pageName == 'Order details'}" th:href="@{/templates/order}" th:text="#{nav.order}">Order details</a>
                     </li>
                     <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')" id="adminDashBoard">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{nav.admin}">
