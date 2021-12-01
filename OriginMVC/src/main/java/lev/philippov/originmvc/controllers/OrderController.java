@@ -56,7 +56,7 @@ public class OrderController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String saveOrder(Principal principal, HttpServletResponse response, HttpServletRequest request,
+    public String saveOrder(Principal principal,
                           @Valid @ModelAttribute("details") OrderDetails details, final BindingResult result, Model model) throws IOException {
         if(result.hasErrors()) {
             for(FieldError fe : result.getFieldErrors()){
@@ -82,7 +82,7 @@ public class OrderController {
 
     @RequestMapping(value = "/oneclick", method = RequestMethod.POST)
     public String showOneClickForm(@Valid @ModelAttribute("details") OrderDetails details, final BindingResult result,
-                                   HttpServletRequest request, HttpServletResponse response,
+                                   HttpServletRequest request,
                                    Model model, Principal principal) throws IOException {
 
         if(request.getParameter("roboCheck") == null && principal == null) {
@@ -105,9 +105,6 @@ public class OrderController {
             order = orderService.saveAnonymousOrder(cart, details);
         }
         cart.clear();
-//        response.sendRedirect(request.getContextPath() + "/order/confirm/"+ order.getId());
-//        response.sendRedirect(request.getContextPath() + "/shop");
-//        return null;
         return "redirect:/payment/"+ order.getId();
     }
 

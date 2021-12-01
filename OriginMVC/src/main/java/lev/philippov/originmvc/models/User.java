@@ -10,6 +10,7 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @Table(name = "users")
+@NamedEntityGraph(name = "user_with_roles",attributeNodes = {@NamedAttributeNode("roles")})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

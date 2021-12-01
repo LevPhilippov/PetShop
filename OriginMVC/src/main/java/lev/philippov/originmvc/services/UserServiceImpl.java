@@ -17,6 +17,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityGraph;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,11 +31,18 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private BCryptPasswordEncoder passwordEncoder;
-    private OrderRepository orderRepository;
+    private OrderService orderService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+    @Autowired
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
     }
     @Autowired
     public void setRoleRepository(RoleRepository roleRepository) {
@@ -40,10 +51,6 @@ public class UserServiceImpl implements UserService{
     @Autowired
     public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
-    }
-    @Autowired
-    public void setOrderRepository(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
     }
 
     @SneakyThrows
@@ -68,6 +75,7 @@ public class UserServiceImpl implements UserService{
         user = new User();
         user.setUsername(username.toLowerCase());
         user.setPassword(passwordEncoder.encode(password));
+        //ROLE_USER is HARDCODED!
         Role role = roleRepository.findByName("ROLE_USER");
         System.out.println("Role is " + role);
         user.setRoles(new HashSet<>(List.of(role)));
@@ -83,25 +91,37 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
 
         //реализация простейшего механизма автоподвязвания заказов по номеру телефона
-        Set<Order> orders = orderRepository.findAllByOrderDetailsPhone(details.getPhone());
+
+        Set<Order> orders = orderService.findAllByOrderDetailsPhone(details.getPhone());
         for (Order order : orders) {
             order.setUser(user);
         }
-        orderRepository.saveAll(orders);
-        //
+        orderService.saveAll(orders);
     }
 
 
-    @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
-        System.out.println(user);
+        EntityGraph<?> user_with_roles = entityManager.getEntityGraph("user_with_roles");
+        User user = entityManager.createQuery("SELECT u FROM User u where u.username=:username", User.class)
+                .setParameter("username", username).setHint("javax.persistence.loadgraph", user_with_roles)
+                .getSingleResult();
         if(user == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
+            throw new UsernameNotFoundException("Invalid credentials.");
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
+
+//    @Transactional
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        User user = findByUsername(username);
+//        System.out.println(user);
+//        if(user == null) {
+//            throw new UsernameNotFoundException("Invalid username or password.");
+//        }
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+//    }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());

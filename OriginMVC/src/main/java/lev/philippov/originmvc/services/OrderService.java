@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.Set;
 
 @Service
 public class OrderService {
@@ -76,5 +77,13 @@ public class OrderService {
 
     public Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId).orElseThrow(()-> new ServerException(String.format("Order with Id %d wasn't found!",orderId)));
+    }
+
+    public Set<Order> findAllByOrderDetailsPhone(String phone) {
+        return orderRepository.findAllByOrderDetailsPhone(phone);
+    }
+
+    public void saveAll(Set<Order> orders) {
+        orderRepository.saveAll(orders);
     }
 }
