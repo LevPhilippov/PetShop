@@ -21,14 +21,12 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "user_id")
-    User user;
+    @Column(name = "user_id")
+    private String userId;
 
-    @Column(name = "price")
-    BigDecimal price;
+    private BigDecimal price;
 
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
@@ -41,11 +39,11 @@ public class Order {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "order")
     Set<OrderItem> orderItems;
 
-    public Order(Cart cart, User user, OrderDetails orderDetails) {
+    public Order(Cart cart, String userId, OrderDetails orderDetails) {
         this.orderItems = new HashSet<>();
         this.orderItems.addAll(cart.getOrderItems());
         this.price = cart.getTotalPrice();
-        this.user = user;
+        this.userId = userId;
         this.orderDetails = orderDetails;
 
         for (OrderItem o : this.orderItems) {
@@ -54,14 +52,13 @@ public class Order {
     }
 
     @Version
-    @Column(name = "version")
     Integer version;
 
     @CreationTimestamp
-    @Column(name = "created")
-    LocalDateTime created;
+    @Column(name = "created_at")
+    OffsetDateTime createdAt;
 
     @UpdateTimestamp
-    @Column
-    LocalDateTime updated;
+    @Column(name = "updated_at")
+    OffsetDateTime updatedAt;
 }
