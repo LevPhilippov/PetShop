@@ -12,7 +12,9 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
@@ -29,26 +31,29 @@ public class OAuth2ClientConfig {
 //    @Value("${keycloak.client_secret}")
 //    private String KEYCLOAK_CLIENT_SECRET;
 //
-//    private ClientRegistration clientRegistration;
 
-//    @Autowired
-//    public void setClientRegistration(ClientRegistration clientRegistration) {
-//        this.clientRegistration = clientRegistration;
+
+//    @Bean
+//    public ClientRegistrationRepository clientRegistrationRepository(ClientRegistration clientRegistration) {
+//        return new InMemoryClientRegistrationRepository(clientRegistration);
 //    }
+
 
 //    @Bean
 //    public ClientRegistration clientRegistration() {
 //        return ClientRegistration
 //                .withRegistrationId("keycloak")
-//                .clientId(KEYCLOAK_CLIENT_ID)
-//                .clientSecret(KEYCLOAK_CLIENT_SECRET)
+//                .clientId("petshopclient")
+//                .clientSecret("78d92de5-f96a-4e60-9b65-419b7c4cb9e1")
+//                .clientAuthenticationMethod(new ClientAuthenticationMethod("client_secret_basic"))
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 //                .scope("openid", "email", "profile", "roles")
 //                .authorizationUri("http://localhost:8080/auth/realms/petshopdev/protocol/openid-connect/auth")
 //                .tokenUri("http://localhost:8080/auth/realms/petshopdev/protocol/openid-connect/token")
 //                .userInfoUri("http://localhost:8080/auth/realms/petshopdev/protocol/openid-connect/userinfo")
-//                .userNameAttributeName("id").clientName("PetShop")
-//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-//                .redirectUri("https://localhost:9443/app/login/oauth2/code/keycloak")//http://localhost:8081/login/oauth2/code/keycloak
+//                .jwkSetUri("http://localhost:8080/auth/realms/petshopdev/protocol/openid-connect/certs")
+//                .userNameAttributeName(IdTokenClaimNames.SUB).clientName("PetShop")
+//                .redirectUriTemplate("{baseUrl}/{action}/oauth2/code/{registrationId}")
 //                .build();
 //    }
 
@@ -71,10 +76,6 @@ public class OAuth2ClientConfig {
 //    }
 
 
-//    @Bean
-//    public ClientRegistrationRepository clientRegistrationRepository() {
-//        return new InMemoryClientRegistrationRepository(clientRegistration);
-//    }
 //
 //    @Bean
 //    public JwtAuthenticationConverter jwtAuthenticationConverter(){

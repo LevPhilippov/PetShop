@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -49,11 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 userInfoEndpointConfig.oidcUserService(oidcUserService());
                             }
                         });
-                    }
-                }).logout(new Customizer<LogoutConfigurer<HttpSecurity>>() {
-                    @Override
-                    public void customize(LogoutConfigurer<HttpSecurity> httpSecurityLogoutConfigurer) {
-                        httpSecurityLogoutConfigurer.invalidateHttpSession(true).clearAuthentication(true);
                     }
                 })
                 .csrf().disable().addFilterAfter(new SessionPopulationAfterAuthenticationFilter(),AnonymousAuthenticationFilter.class);

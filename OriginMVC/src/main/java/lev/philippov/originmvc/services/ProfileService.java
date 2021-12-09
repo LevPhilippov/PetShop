@@ -1,7 +1,6 @@
 package lev.philippov.originmvc.services;
 
 import lev.philippov.originmvc.models.Order;
-import lev.philippov.originmvc.models.User;
 import lev.philippov.originmvc.repositories.OrderRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

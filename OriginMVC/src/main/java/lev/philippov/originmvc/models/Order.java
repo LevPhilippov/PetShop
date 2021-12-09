@@ -45,6 +45,18 @@ public class Order {
         this.price = cart.getTotalPrice();
         this.userId = userId;
         this.orderDetails = orderDetails;
+        this.orderStatus = OrderStatus.NOT_CONFIRMED;
+
+        for (OrderItem o : this.orderItems) {
+            o.setOrder(this);
+        }
+    }
+    public Order(Cart cart, OrderDetails orderDetails) {
+        this.orderItems = new HashSet<>();
+        this.orderItems.addAll(cart.getOrderItems());
+        this.price = cart.getTotalPrice();
+        this.orderDetails = orderDetails;
+        this.orderStatus = OrderStatus.NOT_CONFIRMED;
 
         for (OrderItem o : this.orderItems) {
             o.setOrder(this);
