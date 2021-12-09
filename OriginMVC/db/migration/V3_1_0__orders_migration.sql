@@ -12,15 +12,14 @@ CREATE TABLE order_details (
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders(
     id bigserial,
-    user_id BIGINT,
+    user CHAR(36),
     price DECIMAL NOT NULL,
     order_status VARCHAR(20),
     details_id BIGINT NOT NULL,
     version INT,
-    created TIMESTAMP,
-    updated TIMESTAMP,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
     PRIMARY KEY (id),
-    CONSTRAINT orders_users_fk FOREIGN KEY (user_id) REFERENCES users (id),
     CONSTRAINT orders_details_fk FOREIGN KEY (details_id) REFERENCES order_details(id)
 );
 
