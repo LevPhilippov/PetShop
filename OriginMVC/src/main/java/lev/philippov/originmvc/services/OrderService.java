@@ -21,7 +21,7 @@ import java.util.Set;
 public class OrderService {
 
     OrderRepository orderRepository;
-    UserService userService;
+//    UserService userService;
     OrderConfirmationService orderConfirmationService;
 
     @PersistenceContext
@@ -31,10 +31,10 @@ public class OrderService {
     public void setOrderRepository(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+//    @Autowired
+//    public void setUserService(UserService userService) {
+//        this.userService = userService;
+//    }
     @Autowired
     public void setOrderConfirmationService(OrderConfirmationService orderConfirmationService) {
         this.orderConfirmationService = orderConfirmationService;
@@ -42,11 +42,13 @@ public class OrderService {
 
     @Transactional
     public Order saveOrder(Cart cart, Principal principal, OrderDetails details) {
-        User user = userService.findByUsername(principal.getName());
-        Order order = new Order(cart, user, details);
-        orderRepository.save(order);
-        orderConfirmationService.requestMQConfirmation(order.getId());
-        return order;
+
+//        User user = userService.findByUsername(principal.getName());
+//        Order order = new Order(cart, user, details);
+//        orderRepository.save(order);
+//        orderConfirmationService.requestMQConfirmation(order.getId());
+//        return order;
+        return null;
     }
 
     @Transactional

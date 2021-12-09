@@ -12,15 +12,15 @@ import java.util.Set;
 public class ProfileService {
 
     OrderRepository orderRepository;
-    UserService userService;
 
-    public ProfileService(OrderRepository orderRepository, UserService userService) {
+    public ProfileService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        this.userService = userService;
     }
 
     public Set<Order> findAllOrdersByUser(Long userId) throws UsernameNotFoundException {
-        User user = userService.findById(userId);
-        return orderRepository.findAllByUser(user);
+
+//        User user = userService.findById(userId);
+//        return orderRepository.findAllByUser(user);
+        return null;
     }
 }

@@ -4,7 +4,6 @@ import lev.philippov.originmvc.exceptions.PasswordOrUsernameException;
 import lev.philippov.originmvc.exceptions.UserAlreadyExistException;
 import lev.philippov.originmvc.models.PrivateDetails;
 import lev.philippov.originmvc.models.User;
-import lev.philippov.originmvc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(path = "/registration")
 public class RegController {
 
-    private UserService userService;
+//    private UserService userService;
 
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+//    @Autowired
+//    public void setUserService(UserService userService) {
+//        this.userService = userService;
+//    }
 
     @GetMapping
     public String showRegForm() {
@@ -47,7 +46,7 @@ public class RegController {
 
         User user = null;
         try {
-            user = userService.saveNewUser(username, password);
+//            user = userService.saveNewUser(username, password);
         } catch (UserAlreadyExistException e) {
             model.addAttribute("username",e.getUser().getUsername());
             model.addAttribute("existError",e);
@@ -64,7 +63,7 @@ public class RegController {
     public String proceed (@ModelAttribute PrivateDetails details, @RequestParam("userId") Long userId) throws Throwable {
         System.out.println("userId " + userId);
         System.out.println(details);
-        userService.saveDetails(userId,details);
+//        userService.saveDetails(userId,details);
         return "/login";
 
     }
