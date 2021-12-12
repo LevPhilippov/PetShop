@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -19,7 +20,12 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -50,6 +56,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         });
                     }
                 })
+                .formLogin().loginPage("/oauth2/authorization/keycloak")
+                .and()// default is /login
+                .logout().addLogoutHandler((request, response, authentication) -> {
+                    try {
+                        request.logout();
+                        response.sendRedirect(request.getHeader("referer"));
+//                        response.sendRedirect("http://localhost:8080/auth/realms/petshopdev/protocol/openid-connect/logout?redirect_uri=https://localhost:9443/app");
+                    } catch (ServletException | IOException e) {
+                        e.printStackTrace();
+                    }
+                })
+                .and()
                 .csrf().disable().addFilterAfter(new SessionPopulationAfterAuthenticationFilter(),AnonymousAuthenticationFilter.class);
     }
 
