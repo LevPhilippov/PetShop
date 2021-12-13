@@ -1,9 +1,9 @@
 package lev.philippov.originmvc.services;
 
 import lev.philippov.originmvc.exceptions.ServerException;
-import lev.philippov.originmvc.models.Order;
-import lev.philippov.originmvc.models.OrderDetails;
-import lev.philippov.originmvc.models.OrderStatus;
+import lev.philippov.originmvc.domain.Order;
+import lev.philippov.originmvc.domain.OrderDetails;
+import lev.philippov.originmvc.domain.OrderStatus;
 import lev.philippov.originmvc.repositories.OrderRepository;
 import lev.philippov.originmvc.services.rabbitmq.OrderConfirmationService;
 import lev.philippov.originmvc.utils.Cart;

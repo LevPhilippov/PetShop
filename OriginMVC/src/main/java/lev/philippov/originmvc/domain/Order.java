@@ -1,4 +1,4 @@
-package lev.philippov.originmvc.models;
+package lev.philippov.originmvc.domain;
 
 import lev.philippov.originmvc.utils.Cart;
 import lombok.Data;
@@ -8,7 +8,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;

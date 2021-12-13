@@ -1,6 +1,6 @@
 package lev.philippov.originmvc.utils;
 
-import lev.philippov.originmvc.models.Order;
+import lev.philippov.originmvc.domain.Order;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 

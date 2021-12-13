@@ -1,13 +1,9 @@
 package lev.philippov.originmvc.services;
 
-import lev.philippov.originmvc.models.Order;
-import lev.philippov.originmvc.models.PrivateDetails;
 import lev.philippov.originmvc.utils.MailBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;

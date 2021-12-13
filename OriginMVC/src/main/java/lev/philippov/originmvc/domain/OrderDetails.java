@@ -1,4 +1,4 @@
-package lev.philippov.originmvc.models;
+package lev.philippov.originmvc.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

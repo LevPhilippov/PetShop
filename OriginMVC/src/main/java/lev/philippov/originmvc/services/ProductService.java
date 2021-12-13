@@ -1,8 +1,8 @@
 package lev.philippov.originmvc.services;
 
 
-import lev.philippov.originmvc.models.Product;
-import lev.philippov.originmvc.models.ProductDto;
+import lev.philippov.originmvc.domain.Product;
+import lev.philippov.originmvc.domain.ProductDto;
 import lev.philippov.originmvc.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

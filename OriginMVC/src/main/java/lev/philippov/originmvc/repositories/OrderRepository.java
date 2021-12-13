@@ -1,8 +1,7 @@
 package lev.philippov.originmvc.repositories;
 
-import lev.philippov.originmvc.models.Order;
+import lev.philippov.originmvc.domain.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package lev.philippov.originmvc.models;
+package lev.philippov.originmvc.domain;
 
 import java.math.BigDecimal;
 

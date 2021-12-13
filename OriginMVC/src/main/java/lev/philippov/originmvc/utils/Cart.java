@@ -1,7 +1,7 @@
 package lev.philippov.originmvc.utils;
 
-import lev.philippov.originmvc.models.OrderItem;
-import lev.philippov.originmvc.models.Product;
+import lev.philippov.originmvc.domain.OrderItem;
+import lev.philippov.originmvc.domain.Product;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

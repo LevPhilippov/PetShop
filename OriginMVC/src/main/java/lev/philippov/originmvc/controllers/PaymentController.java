@@ -1,15 +1,8 @@
 package lev.philippov.originmvc.controllers;
 
-import com.paypal.api.payments.*;
-import com.paypal.base.rest.APIContext;
-import com.paypal.base.rest.PayPalRESTException;
-import lev.philippov.originmvc.exceptions.ServerException;
-import lev.philippov.originmvc.models.PrivateDetails;
 import lev.philippov.originmvc.services.MailService;
 import lev.philippov.originmvc.services.OrderService;
-import lev.philippov.originmvc.utils.MailBuilder;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -17,12 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import javax.annotation.PostConstruct;
+
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 @Controller
 @RequestMapping("/payment")
@@ -51,7 +40,7 @@ public class PaymentController {
 
     @GetMapping("/{orderId}")
     public String orderConfirmation(@PathVariable(name = "orderId", required = false) Long orderId, Model model) throws MessagingException {
-        lev.philippov.originmvc.models.Order order = orderService.getOrderById(orderId);
+        lev.philippov.originmvc.domain.Order order = orderService.getOrderById(orderId);
         String confirmationEmail = order.getOrderDetails().getEmail();
         mailService.sendOrderMessage(confirmationEmail,String.format("Order #%d confirmation",orderId),mailService.getMailBuilder().buildOrderEmail(order));
         model.addAttribute("paypalClientId",clientId);

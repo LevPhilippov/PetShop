@@ -1,7 +1,7 @@
 package lev.philippov.originmvc.controllers;
 
-import lev.philippov.originmvc.models.Product;
-import lev.philippov.originmvc.models.ProductDto;
+import lev.philippov.originmvc.domain.Product;
+import lev.philippov.originmvc.domain.ProductDto;
 import lev.philippov.originmvc.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

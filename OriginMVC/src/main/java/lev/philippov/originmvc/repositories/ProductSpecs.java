@@ -1,6 +1,6 @@
 package lev.philippov.originmvc.repositories;
 
-import lev.philippov.originmvc.models.Product;
+import lev.philippov.originmvc.domain.Product;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;

@@ -2,8 +2,8 @@ package lev.philippov.originmvc.controllers;
 
 import lev.philippov.originmvc.exceptions.ServerException;
 import lev.philippov.originmvc.exceptions.WrongAccessException;
-import lev.philippov.originmvc.models.Order;
-import lev.philippov.originmvc.models.OrderDetails;
+import lev.philippov.originmvc.domain.Order;
+import lev.philippov.originmvc.domain.OrderDetails;
 import lev.philippov.originmvc.services.OrderService;
 import lev.philippov.originmvc.utils.Cart;
 import org.slf4j.Logger;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
