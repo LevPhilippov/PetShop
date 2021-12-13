@@ -90,9 +90,7 @@ public class OrderController {
         }
 
         if(result.hasErrors()) {
-            for(FieldError fe : result.getFieldErrors()){
-                model.addAttribute(fe.getField()+"Alert", fe.getDefaultMessage());
-            }
+            result.getFieldErrors().forEach(fe-> model.addAttribute(fe.getField()+"Alert", fe.getDefaultMessage()));
             model.addAttribute("details", details);
             model.addAttribute(cart);
             return  ONE_CLICK_FORM;

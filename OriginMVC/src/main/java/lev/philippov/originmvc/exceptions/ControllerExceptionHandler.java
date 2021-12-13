@@ -25,5 +25,19 @@ public class ControllerExceptionHandler {
             return modelAndView;
         }
 
+//    @ExceptionHandler({ConstraintViolationException.class,BindException.class})
+//    public ModelAndView handleBindingExceptions(@ModelAttribute("details") OrderDetails details, BindException exception) {
+//            BindingResult result = exception.getBindingResult();
+//            ModelMap model = new ModelMap();
+//        for(FieldError fe : result.getFieldErrors()){
+//                model.addAttribute(fe.getField()+"Alert", fe.getDefaultMessage());
+//            }
+//            model.addAttribute("details", details);
+//            model.addAttribute(cart);
+//            return new ModelAndView(ONE_CLICK_FORM, model);
+//    }
+
+
+
 
 }
