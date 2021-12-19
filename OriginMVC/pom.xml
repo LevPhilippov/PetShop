@@ -158,7 +158,7 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
-                <version>8.0.0</version>
+                <version>8.2.2</version>
                 <configuration>
                     <configFiles>flyway.properties</configFiles>
                 </configuration>

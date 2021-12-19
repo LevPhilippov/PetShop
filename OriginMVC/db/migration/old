@@ -1,0 +1,14 @@
+-- CREATE TABLE IF NOT EXISTS product_images (
+--               id bigserial,
+--               product_id bigint,
+--               filepath varchar(255),
+--               PRIMARY KEY(id),
+--               CONSTRAINT fk_products_product_images FOREIGN KEY (product_id) REFERENCES products(id)
+-- );
+--
+-- INSERT INTO product_images(product_id,filepath) VALUES (1,'pets/1/1'),(1,'pets/1/2');
+
+
+
+
+

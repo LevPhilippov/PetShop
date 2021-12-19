@@ -12,7 +12,7 @@ CREATE TABLE order_details (
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders(
     id bigserial,
-    user_id CHAR(36),
+    user_id VARCHAR(36),
     price DECIMAL NOT NULL,
     order_status VARCHAR(20),
     details_id BIGINT NOT NULL,
@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS order_items;
 CREATE TABLE order_items (
                              id                    bigserial,
                              number                INT NOT NULL,
-                             product_id            BIGINT NOT NULL,
+                             product_id            VARCHAR(36) NOT NULL,
                              qty                   INT NOT NULL,
                              order_id              BIGINT NOT NULL,
                              PRIMARY KEY (id),
