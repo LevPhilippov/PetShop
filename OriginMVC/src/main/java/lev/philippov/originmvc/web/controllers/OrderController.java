@@ -6,6 +6,7 @@ import lev.philippov.originmvc.domain.Order;
 import lev.philippov.originmvc.domain.OrderDetails;
 import lev.philippov.originmvc.services.OrderService;
 import lev.philippov.originmvc.utils.Cart;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,28 +24,14 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping("/order")
+@RequiredArgsConstructor
 public class OrderController {
 
-    private Logger logger;
+    private final Logger logger = LoggerFactory.getLogger(OrderController.class);;
     private final String ONE_CLICK_FORM="order/one_click_form";
     private final String ORDER_DETAILS_FORM="order/order_details";
-
-    private Cart cart;
-    @Autowired
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    private OrderService orderService;
-    @Autowired
-    public void setOrderService(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
-    @PostConstruct
-    public void init(){
-        this.logger = LoggerFactory.getLogger(OrderController.class);
-    }
+    private final Cart cart;
+    private final OrderService orderService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String showOrderDetails(Model model) {
@@ -107,7 +94,7 @@ public class OrderController {
 
     private void cartEmptyCheck(Cart cart) {
         if(cart.getOrderItems().size()==0) {
-            logger.error("Somehow user manage to order an empty cart!\n");
+            logger.error("Somehow user managed to order an empty cart!\n");
             throw new ServerException("Cart is empty");
         }
     }

@@ -2,7 +2,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <title th:text="${title}">Main Page</title>
+    <title th:text="#{order.oneclick.finalize}">Buy in one click!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <!-- Bootstrap CSS -->
@@ -16,10 +16,10 @@
 
 <body>
 <div class="container">
-    <nav th:replace="~{fragments/navigation :: navigation(${title})}"/>
+    <nav th:replace="~{fragments/navigation :: navigation('')}"/>
 
     <div class="row justify-content-center">
-        <div class="col-auto display-6">Детали заказа</div>
+        <div class="col-auto display-6" th:text="#{order.details}">Детали заказа</div>
     </div>
 
     <form th:action="@{'/order/oneclick'}" method="post" th:object="${details}">
@@ -48,7 +48,6 @@
     <table class="table my-2">
         <thead>
         <tr class="table-dark">
-            <th scope="col">Num</th>
             <th scope="col">Title</th>
             <th scope="col">Qty</th>
             <th scope="col">Price</th>
@@ -56,7 +55,6 @@
         </thead>
         <tbody>
         <tr th:each="item : ${cart.getOrderItems}">
-            <td th:text="${item.number}">Mark</td>
             <td th:text="${item.product.title}">Otto</td>
             <td th:text="${item.qty}">111</td>
             <td th:text="${item.product.price}">111</td>
