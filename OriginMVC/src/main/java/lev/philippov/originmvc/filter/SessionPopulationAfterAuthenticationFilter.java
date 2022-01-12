@@ -25,6 +25,10 @@ public class SessionPopulationAfterAuthenticationFilter extends OncePerRequestFi
             logger.debug("Principal is: {}", authentication.getPrincipal());
             logger.debug("User {} has added into the session.", authentication.getName());
             request.getSession().setAttribute("user", authentication.getName());
+        } else {
+            logger.debug("Principal is: {}", authentication.getPrincipal());
+            logger.debug("User {} has added into the session.", authentication.getName());
+            request.getSession().removeAttribute("user");
         }
         filterChain.doFilter(request,response);
     }

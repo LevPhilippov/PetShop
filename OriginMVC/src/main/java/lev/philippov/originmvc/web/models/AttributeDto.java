@@ -20,7 +20,7 @@ public class AttributeDto{
     @Null
     Timestamp updatedAt;
 
-    private String title;
+    private String value;
 
     private ParamDto param;
 }

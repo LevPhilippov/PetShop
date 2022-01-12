@@ -24,6 +24,13 @@ public class Category extends BaseEntity{
 
     @JsonIgnore
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
     private List<Product> products;
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

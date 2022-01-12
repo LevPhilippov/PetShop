@@ -24,4 +24,12 @@ public class Attribute extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @Override
+    public String toString() {
+        return "Attribute{" +
+                "value='" + value + '\'' +
+                ", param=" + param +
+                '}';
+    }
 }

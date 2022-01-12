@@ -23,4 +23,10 @@ public class Inventory extends BaseEntity{
     @JsonIgnore
     private Product product;
 
+    @Override
+    public String toString() {
+        return "Inventory{" +
+                "qty=" + qty +
+                '}';
+    }
 }

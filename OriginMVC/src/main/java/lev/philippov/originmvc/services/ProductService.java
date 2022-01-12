@@ -61,7 +61,7 @@ public class ProductService {
             throw new ServerException("Id should not be null!");
         }
         Product product = productRepository.findProductByIdWithAllDetails(id)
-                .orElseThrow(() -> new ServerException("Продукт с запрошенным ID отсутсвуетс в базе!"));
+                .orElseThrow(() -> new ServerException("Продукт с запрошенным ID отсутсвует в базе!"));
         return productMapper.productToProductDto(product);
     }
 
