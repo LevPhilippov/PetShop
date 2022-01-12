@@ -1,6 +1,5 @@
 package lev.philippov.originmvc;
 
-import lev.philippov.originmvc.domain.Product;
 import lev.philippov.originmvc.services.ProductService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,22 +34,17 @@ public class ShopControllerTests extends LocateChangingParentTest{
     @MockBean
     ProductService productServiceMock;
 
-    @Test
-    public void getAll() throws Exception {
-        List<Product> list = new ArrayList<Product>(
-                List.of(new Product(1L, "Dog", new BigDecimal(99)),
-                        new Product(2L,"Cat",new BigDecimal(77)),
-                        new Product(3L,"Horse",new BigDecimal(250))));
-
-        BDDMockito.given(productServiceMock.findFiltered(any(),any(),any())).willReturn(new PageImpl<Product>(list, Pageable.ofSize(5),1));
-
-        mockMvc.perform(get("/shop"))
-                .andDo(print())
-                .andExpect(status().is2xxSuccessful()).andExpect(model().attribute("products",list));
-    }
-
-
-
-
-
+//    @Test
+//    public void getAll() throws Exception {
+//        List<Product> list = new ArrayList<Product>(
+//                List.of(new Product(1L, "Dog", new BigDecimal(99)),
+//                        new Product(2L,"Cat",new BigDecimal(77)),
+//                        new Product(3L,"Horse",new BigDecimal(250))));
+//
+//        BDDMockito.given(productServiceMock.findFiltered(any(),any(),any())).willReturn(new PageImpl<Product>(list, Pageable.ofSize(5),1));
+//
+//        mockMvc.perform(get("/shop"))
+//                .andDo(print())
+//                .andExpect(status().is2xxSuccessful()).andExpect(model().attribute("products",list));
+//    }
 }

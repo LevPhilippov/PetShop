@@ -25,19 +25,13 @@ public class Product extends BaseEntity{
     private String description;
     private String upc;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    @Fetch(value = JOIN)
     private Category category;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "inventory_id")
-    @Fetch(FetchMode.JOIN)
     private List<Inventory> inventories;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-    @Fetch(FetchMode.JOIN)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "product")
     private List<Attribute> attributes;
-
-
 }

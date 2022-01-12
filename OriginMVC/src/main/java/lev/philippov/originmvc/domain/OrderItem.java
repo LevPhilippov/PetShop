@@ -1,11 +1,12 @@
 package lev.philippov.originmvc.domain;
 
+import lev.philippov.originmvc.domain.product.structure.Product;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -17,16 +18,12 @@ public class OrderItem implements Serializable {
 
     public OrderItem(Product product){
         this.product = product;
-        this.qty = 1;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
-
-    @Column(name = "number")
-    private Integer number;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -45,20 +42,5 @@ public class OrderItem implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         OrderItem orderItem = (OrderItem) o;
         return product.getId().equals(orderItem.product.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(product.getId());
-    }
-
-    @Override
-    public String toString() {
-        return "OrderItem{" +
-                "id=" + id +
-                ", number=" + number +
-                ", product=" + product +
-                ", qty=" + qty +
-                '}';
     }
 }

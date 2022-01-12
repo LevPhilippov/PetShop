@@ -1,9 +1,8 @@
-package lev.philippov.originmvc.controllers;
+package lev.philippov.originmvc.web.controllers;
 
-import lev.philippov.originmvc.domain.Product;
-import lev.philippov.originmvc.domain.ProductDto;
 import lev.philippov.originmvc.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lev.philippov.originmvc.web.models.ProductDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,54 +21,49 @@ import static lev.philippov.originmvc.utils.ProductsUtils.*;
 
 @Controller
 @RequestMapping("/shop")
+@RequiredArgsConstructor
 public class ShopController {
 
-    ProductService productService;
-
-    @Autowired
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
-    }
-
+    private final ProductService productService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String findAll(Model model, HttpServletRequest request,
                           @RequestParam(name = "pageNbr", defaultValue = "0") Integer pageNbr,
-                          @RequestParam (name = "itemsOnPage", required = false)Integer itemsOnPage,
+                          @RequestParam (name = "itemsOnPage", required = false)Integer pageSize,
                           HttpSession session){
 
-        if(itemsOnPage != null) {
-            session.setAttribute("itemsOnPage",itemsOnPage);
+        if(pageSize != null) {
+            session.setAttribute("pageSize",pageSize);
             return "redirect:/shop";
         }
 
         Map<String, String> params = parseFilters(request);
         String filters = parseFiltersMapToString(params);
-        Page<Product> products = productService.findFiltered(pageNbr, params, (Integer) session.getAttribute("itemsOnPage"));
+        Page<ProductDto> products = productService.findFiltered(pageNbr, params, (Integer) session.getAttribute("pageSize"));
+
         putProductsFromCookiesToAModel(request, model);
-        model.addAttribute("products", products.getContent());
+        model.addAttribute("categories", productService.findAllCategories());
+        model.addAttribute("productPage", products);
         model.addAttribute("filters", filters);
-        model.addAttribute("pageQty", products.getTotalPages());
-        model.addAttribute("pageNbr", products.getPageable().getPageNumber());
         return "shop";
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{productId}")
-    public String showProduct(@PathVariable Long productId, Model model, HttpServletRequest request,
+    public String showProduct(@PathVariable UUID productId, Model model, HttpServletRequest request,
                               HttpServletResponse response) {
-        Product product = productService.getById(productId);
-        model.addAttribute(product);
-        setShownProductInCookie(productId,request, response);
+        ProductDto product = productService.findById(productId);
+        setShownProductToCookie(productId,request, response);
+        model.addAttribute("product", product);
         return "product_page";
     }
 
-    private void setShownProductInCookie(Long productId, HttpServletRequest request,HttpServletResponse response) {
+    private void setShownProductToCookie(UUID productId, HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         Deque<Cookie> shownProductCookies = new LinkedList<>();
         Arrays.stream(cookies).filter(cookie -> cookie.getName().matches("^prod_[0-9]*$"))
                 .sorted((o1, o2) -> Long.parseLong(o1.getName().split("_")[1])>Long.parseLong(o2.getName().split("_")[1]) ? 1 : -1)
                 .forEach(shownProductCookies :: add);
-        if(shownProductCookies.size()>=5) {
+        if(shownProductCookies.size()>=4) {
             Cookie cookieToRemove = shownProductCookies.pollFirst();
             cookieToRemove.setValue(null);
             cookieToRemove.setMaxAge(0);
@@ -78,25 +72,25 @@ public class ShopController {
         long cookieIndex = 0L;
         if(shownProductCookies.size()>0){
             cookieIndex = Long.parseLong(shownProductCookies.peekLast().getName().split("_")[1]);
-
         }
+
         Cookie cookie = new Cookie("prod_" + (cookieIndex+1) , productId.toString());
         cookie.setMaxAge(60);
         response.addCookie(cookie);
     }
 
-    // for show 5 last shown products
+    // for show 4 last shown products
     private void putProductsFromCookiesToAModel(HttpServletRequest request,Model model) {
         Cookie[] cookies = request.getCookies();
-        Set<Long> shownProductIds = new HashSet<>();
+        Set<UUID> shownProductIds = new HashSet<>();
         if(cookies == null) return;
-//        assert (cookies != null);
+
         Arrays.stream(cookies).filter(cookie -> cookie.getName().matches("^prod_[0-9]*$"))
                 .sorted((o1, o2) -> Long.parseLong(o1.getName().split("_")[1])>Long.parseLong(o2.getName().split("_")[1]) ? 1 : -1)
-                .forEach(c -> shownProductIds.add(Long.parseLong(c.getValue())));
+                .forEach(c -> shownProductIds.add(UUID.fromString(c.getValue())));
 
-        if(shownProductIds.size() >0) {
-            Set<ProductDto> allByIds = productService.findAllByIds(shownProductIds);
+        if(shownProductIds.size() > 0) {
+            List<ProductDto> allByIds = productService.findAllByIds(shownProductIds);
             model.addAttribute("shownProds", allByIds);
         }
     }

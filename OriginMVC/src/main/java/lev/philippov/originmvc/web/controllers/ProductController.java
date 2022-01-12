@@ -1,8 +1,8 @@
-package lev.philippov.originmvc.controllers;
+package lev.philippov.originmvc.web.controllers;
 
 
-import lev.philippov.originmvc.domain.Product;
 import lev.philippov.originmvc.services.ProductService;
+import lev.philippov.originmvc.web.models.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 import static lev.philippov.originmvc.utils.ProductsUtils.*;
 
@@ -40,7 +41,7 @@ public class ProductController {
         }
         Map<String, String> params = parseFilters(request);
         String filters = parseFiltersMapToString(params);
-        Page<Product> products = productService.findFiltered(pageNbr, params, (Integer) session.getAttribute("itemsOnPage"));
+        Page<ProductDto> products = productService.findFiltered(pageNbr, params, (Integer) session.getAttribute("itemsOnPage"));
         model.addAttribute("products", products.getContent());
         model.addAttribute("filters", filters);
         model.addAttribute("pageQty", products.getTotalPages());
@@ -52,7 +53,7 @@ public class ProductController {
 
     //при удалении редиректом сбрасываются фильтры, а должны оставаться. Решено путем переадресации на Header - referer
     @RequestMapping(method = RequestMethod.GET, path = {"/del", })
-    public void deleteProduct(@RequestParam(name = "id") Long id, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void deleteProduct(@RequestParam(name = "id") UUID id, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
         productService.deleteProduct(id);
         response.sendRedirect(request.getHeader("referer"));
     }
@@ -62,10 +63,10 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = {"/edit","/edit/{id}/{filters}","/edit/{id}/*"})
-    public String editProduct(@PathVariable(name = "id", required = false) Long id,
+    public String editProduct(@PathVariable(name = "id", required = false) UUID id,
                               @PathVariable(required = false) String filters,
                               Model model, HttpServletRequest request) throws Throwable {
-        Product product = productService.findById(id);
+        ProductDto product = productService.findById(id);
         model.addAttribute("product", product);
         if (filters != null)
             model.addAttribute(filters);
@@ -74,11 +75,11 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = {"/edit", "/edit/{filters}"})
-    public void editProduct(@ModelAttribute(name = "product") Product product,
+    public void editProduct(@ModelAttribute(name = "product") ProductDto product,
                             @PathVariable(name = "filters", required = false) String filters,
                             HttpServletResponse response,
                             HttpServletRequest request) throws IOException {
-        productService.saveOrUpdate(product);
+        productService.update(product);
         response.sendRedirect(request.getContextPath() + "/admin/products");
     }
 }

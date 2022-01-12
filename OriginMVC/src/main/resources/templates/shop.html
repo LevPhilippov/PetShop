@@ -15,40 +15,65 @@
 <body>
 <div class="container">
     <nav th:replace="~{fragments/navigation :: navigation('Shop')}"/>
-
-    <th:block th:replace="~{fragments/filters :: filters}"/>
-
-    <div class="row justify-content-center">
-        <div class="col-auto display-6" th:text="#{shop.list}">Список продуктов</div>
+    <div class="row justify-content-between">
+        <div class="col-2">
+<!--Блок требуется для сохранности симметрии страницы             -->
+        </div>
+        <div class="col-10">
+            <th:block th:replace="~{fragments/filters :: filters}"/>
+        </div>
     </div>
-
-    <table class="table my-2">
-            <thead>
-            <tr class="table-dark">
-                <th scope="col" th:text="#{shop.id}">id</th>
-                <th scope="col" th:text="#{shop.title}">Title</th>
-                <th scope="col" th:text="#{shop.price}">Price</th>
-                <th scope="col" th:text="#{shop.actions}">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="prod : ${products}">
-                <td th:text="${prod.id}">1</td>
-                <td><a th:text="${prod.title}" th:href="@{'shop/' + ${prod.id}}">Otto</a></td>
-                <td th:text="${prod.price}">111</td>
-                <td>
-                    <a class="btn btn-danger" th:href="@{'/cart/add/' + ${prod.id}}" th:text="#{shop.add}">Add to Cart</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <th:block th:replace="fragments/pagination.html :: pagination (${pageQty}, ${pageNbr}, ${filters})"/>
-            <div th:if="${shownProds != null}">
-                <p>Visited</p>
-                <ul class="list-group">
-                    <li class="list-group-item" th:each="shownProd : ${shownProds}"  th:text="${shownProd.title}">An item</li>
-                </ul>
+    <div class="row justify-content-between">
+        <div class="col-2">
+            <div class="list-group" >
+                <a th:each="cat : ${categories}" href="#" class="list-group-item list-group-item-action" th:text="${cat.title}">Category</a>
             </div>
+        </div>
+
+        <div class="col-10">
+            <table class="table my-2">
+                <thead>
+                <tr class="table">
+                    <th scope="col" th:text="#{shop.upc}">id</th>
+                    <th scope="col" th:text="#{shop.title}">Title</th>
+                    <th scope="col" th:text="#{shop.price}">Price</th>
+                    <th scope="col" th:text="#{shop.actions}">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${productPage.content}">
+                        <td th:text="${product.upc}">1234567889</td>
+                        <td>
+                            <a th:text="${product.title}" th:href="@{'shop/' + ${product.id}}">Title</a>
+                            <br>
+                            <span class="text-muted" th:text="${product.description}">Description</span>
+                        </td>
+                        <td th:text="${product.price}">111</td>
+                        <td>
+                            <a class="btn btn-dark" th:href="@{'/cart/add/' + ${product.id}}" th:text="#{shop.add}">Add to Cart</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <th:block th:replace="fragments/pagination.html :: pagination (${productPage.getTotalPages()}, ${productPage.getNumber()}, ${filters})"/>
+
+            <div class="row" th:if="${shownProds != null}">
+                <div class="col-3" th:each="shownProd : ${shownProds}">
+                    <div class="card" style="width: 100%;" >
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="35%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                        <div class="card-body">
+                            <span class="fs-4" th:text="${shownProd.title}">Title</span>
+                            <div class="fs-6 mb-2  overflow-hidden" style="height: 100px" th:text="${shownProd.description}">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted" th:text="${shownProd.price}">5000</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </body>
 

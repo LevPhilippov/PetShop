@@ -14,11 +14,11 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+//import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+//import org.springframework.security.oauth2.jwt.Jwt;
+//import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
+//import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -61,7 +61,8 @@ public class OAuth2ClientConfig {
                 .tokenUri("http://localhost:8080/auth/realms/petshopdev/protocol/openid-connect/token")
                 .userInfoUri("http://localhost:8080/auth/realms/petshopdev/protocol/openid-connect/userinfo")
                 .jwkSetUri("http://localhost:8080/auth/realms/petshopdev/protocol/openid-connect/certs")
-                .userNameAttributeName(IdTokenClaimNames.SUB).clientName("PetShop")
+                .userNameAttributeName(IdTokenClaimNames.SUB)
+                .clientName("PetShop")
                 .redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}")
                 .build();
     }
@@ -72,21 +73,21 @@ public class OAuth2ClientConfig {
                 .clientSecret("6b924c6e2394bd514338681119089ee2890a7fda").build();
     }
 
-    @Bean
-    @Profile("converter1")
-    public JwtAuthenticationConverter jwtAuthenticationConverter1(){
-        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
-        return jwtAuthenticationConverter;
-    }
-
-    @Bean
-    @Profile("converter2")
-    public JwtAuthenticationConverter jwtAuthenticationConverter2(){
-        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter2());
-        return jwtAuthenticationConverter;
-    }
+//    @Bean
+//    @Profile("converter1")
+//    public JwtAuthenticationConverter jwtAuthenticationConverter1(){
+//        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+//        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
+//        return jwtAuthenticationConverter;
+//    }
+//
+//    @Bean
+//    @Profile("converter2")
+//    public JwtAuthenticationConverter jwtAuthenticationConverter2(){
+//        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+//        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter2());
+//        return jwtAuthenticationConverter;
+//    }
 
 
 }

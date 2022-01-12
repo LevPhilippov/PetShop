@@ -23,35 +23,32 @@
     </div>
     <table class="table my-2" th:if="${cart.getOrderItems().size()>0}">
             <thead>
-            <tr class="table-dark">
-                <th scope="col" th:text="#{shop.number}">Num</th>
+            <tr class="table">
                 <th scope="col" th:text="#{shop.title}">Title</th>
                 <th scope="col" th:text="#{shop.qty}">Qty</th>
                 <th scope="col" th:text="#{shop.price}">Price</th>
-                <th scope="col" th:text="#{shop.id}">Id</th>
+                <th scope="col" th:text="#{shop.upc}">UPC</th>
                 <th scope="col" th:text="#{shop.actions}">Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="item : ${cart.getOrderItems}">
-                <td th:text="${item.number}"></td>
-                <td th:text="${item.product.title}">Otto</td>
-                <td th:text="${item.qty}">111</td>
-                <td th:text="${item.product.price}">111</td>
-                <td th:text="${item.product.id}">Mark</td>
+                <td th:text="${item.product.title}">Title</td>
+                <td th:text="${item.qty}">1</td>
+                <td th:text="${item.product.price}">877.99</td>
+                <td th:text="${item.product.upc}">12345678</td>
                 <td>
-                    <a class="btn btn-success" th:href="@{${#request.getServletPath()}+'/remove/' + ${item.getProduct().getId()}}">Remove</a>
+                    <a class="btn btn-dark" th:href="@{${#request.getServletPath()}+'/remove/' + ${item.getProduct().getId()}}">Remove</a>
                 </td>
             </tr>
             <tr class="table-success">
                 <td th:text="#{shop.total}">Total price</td>
-                <td th:text="''">Otto</td>
-                <td th:text="''">111</td>
-                <td th:text="''">111</td>
-                <td th:text="${cart.totalPrice}">111</td>
+                <td th:text="''"></td>
+                <td th:text="''"></td>
+                <td th:text="${cart.totalPrice}">1157.33</td>
                 <td>
-                    <a class="btn btn-success" th:href="@{/order}" th:text="#{order.finalize}" sec:authorize="isAuthenticated()">Make an order</a>
-                    <a class="btn btn-success" th:href="@{/order/oneclick}" th:text="#{order.oneclick.finalize}">One click order</a>
+                    <a class="btn btn-dark" th:href="@{/order}" th:text="#{order.finalize}" sec:authorize="isAuthenticated()">Make an order</a>
+                    <a class="btn btn-dark" th:href="@{/order/oneclick}" th:text="#{order.oneclick.finalize}">One click order</a>
                 </td>
             </tr>
             </tbody>

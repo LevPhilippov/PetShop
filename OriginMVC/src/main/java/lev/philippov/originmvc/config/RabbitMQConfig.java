@@ -55,5 +55,4 @@ public class RabbitMQConfig implements CommandLineRunner {
         container.setMessageListener(receiver);
         return container;
     }
-
 }

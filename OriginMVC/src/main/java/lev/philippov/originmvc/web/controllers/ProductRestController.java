@@ -1,12 +1,14 @@
-package lev.philippov.originmvc.controllers;
+package lev.philippov.originmvc.web.controllers;
 
-import lev.philippov.originmvc.domain.Product;
 import lev.philippov.originmvc.services.ProductService;
+import lev.philippov.originmvc.web.models.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -20,30 +22,27 @@ public class ProductRestController {
     }
 
     @GetMapping
-    public List<Product> findAll() {
+    public List<ProductDto> findAll() {
         return productService.findAll();
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void remove(@PathVariable Long id) {
+    public void remove(@PathVariable UUID id) {
         productService.deleteProduct(id);
     }
 
     @PostMapping
-    public Product save(@RequestBody Product product) {
+    public ProductDto save(@Valid @RequestBody ProductDto product) {
 
-        if(product.getId()!=null)
-            throw new RuntimeException("Id must be null!");
-        productService.saveOrUpdate(product);
+        productService.save(product);
         return product;
     }
 
     @PutMapping
-    public Product update(@RequestBody Product product) {
-        if(product.getId()==null)
-            throw new RuntimeException("Id must not be null!");
-        productService.saveOrUpdate(product);
+    public ProductDto update(@Valid @RequestBody ProductDto product) {
+
+        productService.update(product);
         return product;
     }
 

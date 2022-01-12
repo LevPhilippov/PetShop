@@ -26,7 +26,6 @@ CREATE TABLE orders(
 DROP TABLE IF EXISTS order_items;
 CREATE TABLE order_items (
                              id                    bigserial,
-                             number                INT NOT NULL,
                              product_id            VARCHAR(36) NOT NULL,
                              qty                   INT NOT NULL,
                              order_id              BIGINT NOT NULL,

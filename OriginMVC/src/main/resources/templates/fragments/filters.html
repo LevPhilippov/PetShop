@@ -32,14 +32,14 @@
                                th:placeholder="#{filters.word}">
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-primary" th:text="#{filters.apply}">Применить</button>
+                        <button type="submit" class="btn btn-dark" th:text="#{filters.apply}">Применить</button>
                     </div>
                 </form>
             </div>
             <div class="col-auto">
                 <div class="row justify-content-end">
                     <div class="col-auto">
-                        <a th:href="@{'/products'}" class="btn btn-danger" th:text="#{filters.reset}">Сбросить</a>
+                        <a th:href="@{'/products'}" class="btn btn-dark" th:text="#{filters.reset}">Сбросить</a>
                     </div>
                     <div class="col-auto" sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{'/products/edit'}" class="btn btn-success" th:text="#{filters.add}">Добавить</a>

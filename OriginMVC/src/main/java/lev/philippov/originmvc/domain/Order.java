@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -38,10 +39,10 @@ public class Order {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "order")
     Set<OrderItem> orderItems;
 
-    public Order(Cart cart, String userId, OrderDetails orderDetails) {
+    public Order(List<OrderItem> orderItemList, BigDecimal price, String userId, OrderDetails orderDetails) {
         this.orderItems = new HashSet<>();
-        this.orderItems.addAll(cart.getOrderItems());
-        this.price = cart.getTotalPrice();
+        this.orderItems.addAll(orderItemList);
+        this.price = price;
         this.userId = userId;
         this.orderDetails = orderDetails;
         this.orderStatus = OrderStatus.NOT_CONFIRMED;
@@ -50,10 +51,10 @@ public class Order {
             o.setOrder(this);
         }
     }
-    public Order(Cart cart, OrderDetails orderDetails) {
+    public Order(List<OrderItem> orderItems, BigDecimal price, OrderDetails orderDetails) {
         this.orderItems = new HashSet<>();
-        this.orderItems.addAll(cart.getOrderItems());
-        this.price = cart.getTotalPrice();
+        this.orderItems.addAll(orderItems);
+        this.price = price;
         this.orderDetails = orderDetails;
         this.orderStatus = OrderStatus.NOT_CONFIRMED;
 

@@ -1,4 +1,4 @@
-package lev.philippov.originmvc.controllers;
+package lev.philippov.originmvc.web.controllers;
 
 import lev.philippov.originmvc.services.ProductService;
 import lev.philippov.originmvc.utils.Cart;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/cart")
@@ -35,14 +36,14 @@ public class CartController {
     }
 
     @RequestMapping("/add/{id}")
-    public void add(@PathVariable Long id,HttpServletRequest request, HttpServletResponse response) throws Throwable {
+    public void add(@PathVariable UUID id, HttpServletRequest request, HttpServletResponse response) throws Throwable {
         this.cart.add(productService.findById(id));
         response.sendRedirect(request.getHeader("referer"));
     }
 
     @RequestMapping("/remove/{id}")
-    public String remove(@PathVariable Long id) {
-        this.cart.remove(productService.getById(id));
+    public String remove(@PathVariable UUID id) {
+        this.cart.remove(id);
         return "redirect:/cart";
     }
 }

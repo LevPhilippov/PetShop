@@ -60,15 +60,15 @@
                     </li>
                 </ul>
 
-                <a class="btn btn-outline-success" sec:authorize="isAnonymous()" th:href="@{/oauth2/authorization/keycloak}">Login</a>
-                <a class="btn btn-outline-danger" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
+                <a class="btn btn-outline-dark me-3" sec:authorize="isAnonymous()" th:href="@{/oauth2/authorization/keycloak}">Login</a>
+                <a class="btn btn-outline-dark me-3" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
 
-                <form class="d-flex ms-5 mt-3" method="GET" th:action="@{${#request.getServletPath()}}" >
+                <form class="d-flex" method="GET" th:action="@{${#request.getServletPath()}}" >
                     <select class="form-select" name="lang">
                         <option value="ru" selected>RU</option>
                         <option value="en">EN</option>
                     </select>
-                    <button class="btn btn-outline-success" type="submit" th:text="#{filters.apply}">Apply</button>
+                    <button class="btn btn-outline-dark" type="submit" th:text="#{filters.apply}">Apply</button>
                 </form>
 
             </div>

@@ -1,78 +1,90 @@
 package lev.philippov.originmvc.services;
 
 
-import lev.philippov.originmvc.domain.Product;
-import lev.philippov.originmvc.domain.ProductDto;
+import lev.philippov.originmvc.domain.product.structure.Product;
+import lev.philippov.originmvc.exceptions.ServerException;
+import lev.philippov.originmvc.repositories.CategoryRepository;
 import lev.philippov.originmvc.repositories.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lev.philippov.originmvc.services.mappers.CategoryMapper;
+import lev.philippov.originmvc.services.mappers.ProductMapper;
+import lev.philippov.originmvc.web.models.CategoryDto;
+import lev.philippov.originmvc.web.models.ProductDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
 import java.util.*;
-import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
-import static lev.philippov.originmvc.repositories.ProductSpecs.*;
+import static lev.philippov.originmvc.utils.ProductSpecificationBuilder.*;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
-    private ProductRepository productRepository;
-    public static final String[] filtersSet = {"minPrice","maxPrice", "word"};
-    private static final Integer DEF_ITEMS_ON_PAGE = 5;
+    private final ProductRepository productRepository;
+    private static final Integer DEFAULT_PAGE_SIZE = 5;
+    private final ProductMapper productMapper;
+    private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
-    @Autowired
-    @Qualifier("productRepository")
-    public void setProductRepository(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public List<ProductDto> findAll(){
+        return productRepository
+                .findAll().stream()
+                .map(productMapper::productToProductDto)
+                .collect(Collectors.toList());
     }
 
-    public List<Product> findAll(){
-//        System.out.println(productRepository.findById(1L));
-        return productRepository.findAll();
+    public List<CategoryDto> findAllCategories(){
+        return categoryRepository.findAll().stream().map(categoryMapper::categoryToCategoryDto).collect(Collectors.toList());
     }
 
-    public Page<Product> findFiltered(Integer pageNbr, Map<String, String> params,Integer itemsOnPage) {
-        return productRepository.findAll(buildProductSpecification(params),
-        PageRequest.of(Optional.ofNullable(pageNbr).orElse(0),Optional.ofNullable(itemsOnPage).orElse(DEF_ITEMS_ON_PAGE), Sort.by(Sort.Direction.ASC, "id")));
+    public Page<ProductDto> findFiltered(Integer pageNbr, Map<String, String> params,Integer pageSize) {
+        final int pageSize1 = pageSize != null ? pageSize : DEFAULT_PAGE_SIZE;
+        PageRequest pageRequest = PageRequest.of(pageNbr, pageSize1, Sort.by(Sort.Direction.ASC, "title"));
+        Page<Product> productPage = productRepository.findAll(buildProductSpecification(params), pageRequest);
+        List<ProductDto> productDtos = productPage.getContent()
+                .stream().map(productMapper::productToProductDto).collect(Collectors.toList());
+        return new PageImpl<ProductDto>(productDtos,pageRequest,productPage.getTotalElements());
     }
 
-    public void deleteProduct(Long id) {
+    public void deleteProduct(UUID id) {
         productRepository.deleteById(id);
     }
 
-    public Product findById(Long id) throws Throwable {
-        if(id!=null)
-           return productRepository.findById(id).orElseThrow((Supplier<Throwable>) () -> new RuntimeException("Продукт с запрошенным ID отсутсвуетс в базе!"));
-        else
-            return new Product();
+    public ProductDto findById(UUID id) throws ServerException {
+        if (Objects.isNull(id)) {
+            throw new ServerException("Id should not be null!");
+        }
+        Product product = productRepository.findProductByIdWithAllDetails(id)
+                .orElseThrow(() -> new ServerException("Продукт с запрошенным ID отсутсвуетс в базе!"));
+        return productMapper.productToProductDto(product);
     }
+
     @Transactional
-    public void saveOrUpdate(Product product) {
-        productRepository.save(product);
+    public void save(ProductDto dto) {
+        productRepository.save(productMapper.productDtoToProduct(dto));
     }
 
-    private Specification<Product> buildProductSpecification(Map<String, String> params) {
-        Specification<Product> ps = Specification.where(null);
-        if(params.containsKey(filtersSet[0]))
-            ps = ps.and(priceGreaterThanOrEq(new BigDecimal(params.get(filtersSet[0]))));
-        if(params.containsKey(filtersSet[1]))
-            ps = ps.and(priceLessThanOrEq(new BigDecimal(params.get(filtersSet[1]))));
-        if(params.containsKey(filtersSet[2]))
-            ps = ps.and(wordLike(params.get(filtersSet[2])));
-        return ps;
+    @Transactional
+    public void update(ProductDto dto) {
+        if(Objects.isNull(dto.getId())){
+            throw new ServerException("Id should not be null!");
+        }
+
+        if(productRepository.existsById(dto.getId())){
+            productRepository.save(productMapper.productDtoToProduct(dto));
+        } else {
+            throw new ServerException(String.format("Impossible to update! Product with id=%s doesn't exist.", dto.getId().toString()));
+        }
     }
 
-    public Product getById(Long id){
-        return productRepository.getById(id);
+    public List<ProductDto> findAllByIds(Collection<UUID> ids) {
+        List<Product> products = productRepository.findAllById(ids);
+        return products.stream().map(productMapper::productToProductDto).collect(Collectors.toList());
     }
-
-    public Set<ProductDto> findAllByIds(Collection<Long> ids) {
-        return productRepository.findAllByIdIn(ids);
-    };
 }

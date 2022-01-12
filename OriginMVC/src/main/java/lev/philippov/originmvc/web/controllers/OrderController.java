@@ -1,4 +1,4 @@
-package lev.philippov.originmvc.controllers;
+package lev.philippov.originmvc.web.controllers;
 
 import lev.philippov.originmvc.exceptions.ServerException;
 import lev.philippov.originmvc.exceptions.WrongAccessException;

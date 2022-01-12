@@ -1,7 +1,7 @@
 package lev.philippov.originmvc;
 
-import lev.philippov.originmvc.domain.Product;
 import lev.philippov.originmvc.services.ProductService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -38,19 +37,20 @@ public class ProductControllerTests extends LocateChangingParentTest{
                 .andExpect(content().string(containsString("Welcome")));
     }
 
-    @Test
-    public void getAll() throws Exception {
-        List<Product> list = new ArrayList<Product>(
-                List.of(new Product(1L, "Dog", new BigDecimal(99)),
-                        new Product(2L,"Cat",new BigDecimal(77)),
-                        new Product(3L,"Horse",new BigDecimal(250))));
-
-        this.productServiceMock = mock(ProductService.class);
-        when(productServiceMock.findAll()).thenReturn(list);
-
-        mockMvc.perform(get("/admin/products"))
-                .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/login"));
-    }
+//    @Test
+//    @Disabled
+//    public void getAll() throws Exception {
+//        List<Product> list = new ArrayList<Product>(
+//                List.of(new Product(1L, "Dog", new BigDecimal(99)),
+//                        new Product(2L,"Cat",new BigDecimal(77)),
+//                        new Product(3L,"Horse",new BigDecimal(250))));
+//
+//        this.productServiceMock = mock(ProductService.class);
+//        when(productServiceMock.findAll()).thenReturn(list);
+//
+//        mockMvc.perform(get("/admin/products"))
+//                .andDo(print())
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrl("http://localhost/login"));
+//    }
 }
