@@ -20,7 +20,7 @@ import java.util.*;
 import static lev.philippov.originmvc.utils.ProductsUtils.*;
 
 @Controller
-@RequestMapping("/shop")
+@RequestMapping(path = {"/shop", "/"})
 @RequiredArgsConstructor
 public class ShopController {
 

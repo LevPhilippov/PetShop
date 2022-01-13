@@ -9,7 +9,7 @@ import java.util.Map;
 import static lev.philippov.originmvc.repositories.ProductSpecs.*;
 
 public class ProductSpecificationBuilder {
-    public static final String[] filtersSet = {"minPrice","maxPrice", "word"};
+    public static final String[] filtersSet = {"minPrice","maxPrice", "word", "category"};
 
     public static Specification<Product> buildProductSpecification(Map<String, String> params) {
         Specification<Product> ps = Specification.where(null);
@@ -19,6 +19,8 @@ public class ProductSpecificationBuilder {
             ps = ps.and(priceLessThanOrEq(new BigDecimal(params.get(filtersSet[1]))));
         if(params.containsKey(filtersSet[2]))
             ps = ps.and(wordLike(params.get(filtersSet[2])));
+        if(params.containsKey(filtersSet[3]))
+            ps=ps.and(categoryLike(params.get(filtersSet[3])));
         return ps;
     }
 

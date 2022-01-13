@@ -25,6 +25,10 @@ public class ProductSpecs {
     }
 
     public static Specification<Product> wordLike(String word) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("title"), word);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("title"), "%"+word+"%");
+    }
+
+    public static Specification<Product> categoryLike(String category){
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("category").get("title"), "%"+category+"%");
     }
 }

@@ -22,9 +22,6 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" th:href="@{/}" th:classappend="${pageName=='Home'?'active':''}" th:text="#{nav.home}">Home</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" th:classappend="${pageName=='Shop'?'active':''}" th:href="@{/shop}" th:text="#{nav.shop}">Shop</a>
                     </li>
                     <li class="nav-item">

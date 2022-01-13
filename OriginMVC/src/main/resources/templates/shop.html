@@ -26,7 +26,8 @@
     <div class="row justify-content-between">
         <div class="col-2">
             <div class="list-group" >
-                <a th:each="cat : ${categories}" href="#" class="list-group-item list-group-item-action" th:text="${cat.title}">Category</a>
+                <a th:href="@{/shop}" class="list-group-item list-group-item-action">All goods</a>
+                <a th:each="cat : ${categories}" th:href="@{/shop(category=${cat.title})}" class="list-group-item list-group-item-action" th:text="${cat.title}">Category</a>
             </div>
         </div>
 
