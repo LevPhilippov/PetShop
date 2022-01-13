@@ -36,20 +36,6 @@
                 <td th:text="${order.price}">3777.55</td>
                 <td th:with="orderItems=${order.orderItems}">
                     <p th:each="item : ${orderItems}" th:text="${item.product.title} + ' х ' + ${item.qty} + '     ' + ${item.product.price*item.qty}">Prod1</p>
-<!--                    <table class="table" style="font-size: 12px">-->
-<!--                        <thead>-->
-<!--                            <th scope="col" th:text="#{shop.title}">Title</th>-->
-<!--                            <th scope="col" th:text="#{shop.price}">Price</th>-->
-<!--                            <th scope="col" th:text="#{shop.qty}">Quantity</th>-->
-<!--                        </thead>-->
-<!--                        <tbody >-->
-<!--                            <tr th:each="item : ${orderItems}">-->
-<!--                                <td th:text="${item.product.title}">Prod1</td>-->
-<!--                                <td th:text="${item.product.price}">111</td>-->
-<!--                                <td th:text="${item.qty}">33</td>-->
-<!--                            </tr>-->
-<!--                        </tbody>-->
-<!--                    </table>-->
                 </td>
             </tr>
             </tbody>

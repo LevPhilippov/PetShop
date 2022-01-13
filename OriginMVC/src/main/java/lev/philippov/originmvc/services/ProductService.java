@@ -52,6 +52,7 @@ public class ProductService {
         return new PageImpl<ProductDto>(productDtos,pageRequest,productPage.getTotalElements());
     }
 
+    @Transactional
     public void deleteProduct(UUID id) {
         productRepository.deleteById(id);
     }

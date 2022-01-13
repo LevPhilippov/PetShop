@@ -13,7 +13,7 @@
 
 <body>
 <div class="container">
-    <nav th:replace="~{fragments/navigation :: navigation('cart')}"/>
+    <nav th:replace="~{fragments/navigation :: navigation('Shop')}"/>
 
     <div class="row justify-content-center" th:if="${cart.getOrderItems().size()>0}">
         <div class="col-auto display-6">Корзина</div>

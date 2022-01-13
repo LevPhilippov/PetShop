@@ -57,7 +57,8 @@
                     </li>
                 </ul>
 
-                <a class="btn btn-outline-dark me-3" sec:authorize="isAnonymous()" th:href="@{/oauth2/authorization/keycloak}">Login</a>
+<!--                <a class="btn btn-outline-dark me-3" sec:authorize="isAnonymous()" th:href="@{/oauth2/authorization/keycloak}">Login</a>-->
+                <a class="btn btn-outline-dark me-3" sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
                 <a class="btn btn-outline-dark me-3" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
 
                 <form class="d-flex" method="GET" th:action="@{${#request.getServletPath()}}" >

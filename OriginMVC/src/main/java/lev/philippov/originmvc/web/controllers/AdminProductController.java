@@ -3,6 +3,7 @@ package lev.philippov.originmvc.web.controllers;
 
 import lev.philippov.originmvc.services.ProductService;
 import lev.philippov.originmvc.web.models.ProductDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -20,63 +21,62 @@ import static lev.philippov.originmvc.utils.ProductsUtils.*;
 
 @Controller
 @RequestMapping("/admin/products")
-public class ProductController {
+@RequiredArgsConstructor
+public class AdminProductController {
 
-    ProductService productService;
-
-    @Autowired
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
-    }
-
+    private final ProductService productService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String findAll(Model model, HttpServletRequest request,
                           @RequestParam(name = "pageNbr", defaultValue = "0") Integer pageNbr,
-                          @RequestParam (name = "itemsOnPage", required = false)Integer itemsOnPage,
+                          @RequestParam (name = "itemsOnPage", required = false)Integer pageSize,
                           HttpSession session){
-        if(itemsOnPage != null) {
-            session.setAttribute("itemsOnPage",itemsOnPage);
-            return "redirect:admin/products";
+
+        if(pageSize != null) {
+            session.setAttribute("pageSize",pageSize);
+            return "redirect:/shop";
         }
+
         Map<String, String> params = parseFilters(request);
         String filters = parseFiltersMapToString(params);
-        Page<ProductDto> products = productService.findFiltered(pageNbr, params, (Integer) session.getAttribute("itemsOnPage"));
-        model.addAttribute("products", products.getContent());
+        Page<ProductDto> products = productService.findFiltered(pageNbr, params, (Integer) session.getAttribute("pageSize"));
+
+        model.addAttribute("categories", productService.findAllCategories());
+        model.addAttribute("productPage", products);
         model.addAttribute("filters", filters);
-        model.addAttribute("pageQty", products.getTotalPages());
-        model.addAttribute("pageNbr", products.getPageable().getPageNumber()); //first page is number 0
-        addTitle(model, "Product list");
-        return "products";
+        return "admin/products";
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/{productId}")
+    public String showProduct(@PathVariable UUID productId, Model model, HttpServletRequest request,
+                              HttpServletResponse response) {
+        ProductDto product = productService.findById(productId);
+        model.addAttribute("product", product);
+        return "product_page";
+    }
+
+    @GetMapping(path = "add")
+    public String addNewProduct(Model model){
+        return "admin/edit_product_form";
+    }
 
     //при удалении редиректом сбрасываются фильтры, а должны оставаться. Решено путем переадресации на Header - referer
-    @RequestMapping(method = RequestMethod.GET, path = {"/del", })
-    public void deleteProduct(@RequestParam(name = "id") UUID id, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping(method = RequestMethod.GET, path = {"/delete/{id}", })
+    public void deleteProduct(@PathVariable(name = "id") UUID id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         productService.deleteProduct(id);
         response.sendRedirect(request.getHeader("referer"));
     }
 
-    private void addTitle(Model model, String title) {
-        model.addAttribute("title", title);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, path = {"/edit","/edit/{id}/{filters}","/edit/{id}/*"})
+    @RequestMapping(method = RequestMethod.GET, path = "/edit/{id}")
     public String editProduct(@PathVariable(name = "id", required = false) UUID id,
-                              @PathVariable(required = false) String filters,
-                              Model model, HttpServletRequest request) throws Throwable {
+                              Model model){
         ProductDto product = productService.findById(id);
         model.addAttribute("product", product);
-        if (filters != null)
-            model.addAttribute(filters);
-        addTitle(model, "Edit product");
-        return "edit_product_form";
+        return "admin/edit_product_form";
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = {"/edit", "/edit/{filters}"})
+    @RequestMapping(method = RequestMethod.POST, path = "/edit")
     public void editProduct(@ModelAttribute(name = "product") ProductDto product,
-                            @PathVariable(name = "filters", required = false) String filters,
                             HttpServletResponse response,
                             HttpServletRequest request) throws IOException {
         productService.update(product);

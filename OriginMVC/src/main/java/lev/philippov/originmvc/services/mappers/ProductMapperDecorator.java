@@ -5,7 +5,6 @@ import lev.philippov.originmvc.repositories.CategoryRepository;
 import lev.philippov.originmvc.web.models.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.stream.Collectors;
@@ -31,6 +30,7 @@ public class ProductMapperDecorator implements ProductMapper {
         dto.setId(product.getId());
         dto.setTitle(product.getTitle());
         dto.setPrice(product.getPrice());
+        dto.setDescription(product.getDescription());
         dto.setVersion(product.getVersion());
         dto.setCreatedAt(product.getCreatedAt());
         dto.setUpdatedAt(product.getUpdatedAt());
@@ -46,6 +46,7 @@ public class ProductMapperDecorator implements ProductMapper {
         product.setId(productDto.getId());
         product.setTitle(productDto.getTitle());
         product.setPrice(productDto.getPrice());
+        product.setDescription(productDto.getDescription());
         product.setVersion(productDto.getVersion());
         product.setCreatedAt(productDto.getCreatedAt());
         product.setUpdatedAt(productDto.getUpdatedAt());
