@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title text="Edit product">Main Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+</head>
+    <body>
+        <div class="container">
+            <nav th:replace="~{fragments/navigation :: navigation('Shop')}"/>
+            <div class="row justify-content-between">
+                <div class="col-5">
+                    <div>
+                        <p class="text-start display-6" th:text="'Title: ' + ${product.title}">Product title</p>
+                        <p class="text-start" th:text="'Category: ' + ${product.category}">Product category</p>
+                        <p class="text-start" th:text="'Description: ' + ${product.description}">Product description</p>
+                        <p class="text-start" th:text="'Inventory: ' + ${product.inventory}">Product inventory</p>
+                        <p class="text-start" th:text="'UPC: ' + ${product.upc}">Product upc</p>
+                        <ul>
+                            <li th:each="attr:${product.attributes}" th:text="${attr.param.title} + ': ' + ${attr.value} + ' ' + ${attr.param.measure==null ? '' : attr.param.measure}">Attribute1: value Meas.</li>
+                        </ul>
+                        <p class="text-start" th:text="'Price: ' + ${product.price}">Product price</p>
+                    </div>
+                    <br>
+                    <form th:method="POST" th:action="@{/admin/products/add/attribute}" th:object="${attribute}">
+                        <fieldset>
+                            <legend>Add an attribute</legend>
+                            <div class="mb-3">
+                                <label for="attr_param" class="form-label">Param</label>
+                                <select id="attr_param" class="form-select" aria-label="Select param" name="paramId">
+                                    <option th:each="p : ${aparams}" th:value="${p.id}" th:text="${p.title} + ',' + ${p.measure}">Param</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="attr_val" class="form-label">Attribute value</label>
+                                <input type="text" class="form-control" id="attr_val"  th:field="*{value}" placeholder="Value">
+                            </div>
+                        </fieldset>
+                        <button type="submit" class="btn btn-dark" th:text="Add">Add</button>
+                    </form>
+                </div>
+
+                <div class="col-7">
+                    <form th:object="${product}"
+                          th:action="@{'/admin/products/add/confirm'}"
+                          th:method="POST"
+                    >
+                        <div class="mb-3">
+                            <label for="prod_id" class="form-label">Product ID</label>
+                            <input type="number" class="form-control" id="prod_id"  th:field="*{id}" placeholder="Product id" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prod_title" class="form-label">Product title</label>
+                            <input type="text" class="form-control" id="prod_title" th:field="*{title}" placeholder="Product name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="prod_price" class="form-label">Product price</label>
+                            <input class="form-control" id="prod_price"  th:field="*{price}" placeholder="Product price">
+                        </div>
+                        <div class="mb-3">
+                            <label for="prod_upc" class="form-label">UPC</label>
+                            <input type="number" class="form-control" id="prod_upc" th:field="*{upc}" placeholder="Product price">
+                        </div>
+                        <div class="mb-3">
+                            <label for="prod_category" class="form-label">Category</label>
+                            <select id="prod_category" class="form-select" aria-label="Select category" name="categoryId">
+                                <option th:each="cat : ${categories}" th:value="${cat.title}" th:text="${cat.title}">Category</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prod_inventory" class="form-label">Inventory</label>
+                            <input type="number" class="form-control" id="prod_inventory" th:field="*{inventory}" placeholder="Inventory" th:default="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="prod_description" class="form-label">Description</label>
+                            <textarea class="form-control" id="prod_description" rows="3" th:field="*{description}" placeholder="Write a description"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-dark" th:text="Confirm">Confirm</button>
+                    </form>
+                </div>
+            </div>
+            <a class="btn btn-primary w-100" th:href="@{/admin/products/add/save}">Save product</a>
+        </div>
+    </body>
+</html>
+

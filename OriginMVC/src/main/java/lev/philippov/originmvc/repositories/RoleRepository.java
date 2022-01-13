@@ -1,10 +1,8 @@
 package lev.philippov.originmvc.repositories;
 
-import lev.philippov.originmvc.models.Role;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import lev.philippov.originmvc.domain.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface RoleRepository extends CrudRepository<Role,Long> {
-    Role findByName(String role);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Role getRoleByRole(String role);
 }

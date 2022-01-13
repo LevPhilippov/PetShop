@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-import static lev.philippov.originmvc.services.ProductService.filtersSet;
+import static lev.philippov.originmvc.utils.ProductSpecificationBuilder.filtersSet;
 
 public class ProductsUtils {
 

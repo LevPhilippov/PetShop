@@ -1,41 +1,55 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+</head>
+<body>
     <th:block th:fragment="pagination (pageQty, pageNbr, filters)">
-
-        <form class="row justify-content-end" th:action="@{${#request.getServletPath()}}" method="GET">
-            <div class="col-auto align-self-center">
-                <label for="itemsOnPage" th:text="#{page.itemsinlist}">Элементов на странице</label>
-            </div>
-            <div class="col-auto">
-                <select id="itemsOnPage" class="form-select" aria-label=".form-select-sm example" name="itemsOnPage">
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
-                </select>
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-success mb-3" th:text="#{filters.apply}">Выбрать</button>
-            </div>
-        </form>
-
         <nav>
-            <ul class="pagination">
-                <li class="page-item" th:classappend="${pageNbr==0?'disabled':''}">
-                    <a class="page-link"
-                       th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNbr - 1}+ '&' + ${filters?:''}}" th:text="#{page.prev}">Prew</a>
-                </li>
-                <li class="page-item" th:each="pageNum : ${#numbers.sequence(1,pageQty)}" }
-                    th:classappend="${pageNbr==pageNum - 1 ? 'active':''}">
-                    <a class="page-link"
-                       th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNum - 1} + '&' +${filters?:''}}"
-                       th:text="${pageNum}">Link</a>
-                </li>
-                <li class="page-item" th:classappend="${pageNbr >= pageQty - 1?'disabled':''}">
-                    <a class="page-link"
-                       th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNbr + 1} +'&'+ ${filters?:''}}"
-                       th:attr="aria-disabled=${pageNbr >= pageQty - 1?true:false}" th:text="#{page.next}">Next</a>
-                </li>
-            </ul>
+            <div class="row justify-content-between">
+                <div class="col-5">
+                    <ul class="pagination">
+                        <li class="page-item" th:classappend="${pageNbr==0?'disabled':''}">
+                            <a class="page-link"
+                               th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNbr - 1}+ '&' + ${filters?:''}}" th:text="#{page.prev}">Prew</a>
+                        </li>
+                        <li class="page-item" th:each="pageNum : ${#numbers.sequence(1,pageQty)}" }
+                            th:classappend="${pageNbr==pageNum - 1 ? 'active':''}">
+                            <a class="page-link"
+                               th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNum - 1} + '&' +${filters?:''}}"
+                               th:text="${pageNum}">Link</a>
+                        </li>
+                        <li class="page-item" th:classappend="${pageNbr >= pageQty - 1?'disabled':''}">
+                            <a class="page-link"
+                               th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNbr + 1} +'&'+ ${filters?:''}}"
+                               th:attr="aria-disabled=${pageNbr >= pageQty - 1?true:false}" th:text="#{page.next}">Next</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-5">
+                    <form class="row justify-content-end" th:action="@{${#request.getServletPath()}}" method="GET">
+                        <div class="col-auto align-self-center">
+                            <label for="itemsOnPage" th:text="#{page.itemsinlist}">On page</label>
+                        </div>
+                        <div class="col-auto">
+                            <select id="itemsOnPage" class="form-select" aria-label=".form-select-sm example" name="itemsOnPage">
+                                <option value="5" selected>5</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-dark mb-3" th:text="#{filters.apply}">Выбрать</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </nav>
     </th:block>
+</body>
 </html>
 

@@ -1,7 +1,9 @@
 package lev.philippov.originmvc.utils;
 
-import lev.philippov.originmvc.models.OrderItem;
-import lev.philippov.originmvc.models.Product;
+import lev.philippov.originmvc.domain.OrderItem;
+import lev.philippov.originmvc.exceptions.ServerException;
+import lev.philippov.originmvc.web.models.OrderItemDto;
+import lev.philippov.originmvc.web.models.ProductDto;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,68 +13,53 @@ import org.springframework.web.context.annotation.SessionScope;
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 @Getter
 @Setter
 @Data
-//@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @SessionScope
 @Component
 public class Cart {
 
-    private Set<OrderItem> orderItems;
+    private Set<OrderItemDto> orderItems;
     private BigDecimal totalPrice;
-    private Integer counter;
 
     public Cart(){
         this.orderItems = new HashSet<>();
-        this.counter = 0;
     }
 
-    public void add(Product product) {
-        OrderItem orderItem = new OrderItem(product);
-        orderItem.setNumber(countIncr());
+    public void add(ProductDto product) {
+        OrderItemDto orderItem = new OrderItemDto(product);
         if(!orderItems.add(orderItem)){
-            countDecr();
             orderItems.stream().filter(i->i.equals(orderItem)).forEach(i -> i.setQty(i.getQty()+1));
-            WeakReference reference = new WeakReference(orderItem);
         }
         countPrice();
     }
 
-    public void remove(Product product) {
-        OrderItem orderItem = new OrderItem(product);
-        if(orderItems.contains(orderItem)){
-            if(orderItems.stream().filter(i->i.equals(orderItem)).anyMatch(i -> {
-                i.setQty(i.getQty()-1);
-                return i.getQty() == 0;
-            })) {
-                orderItems.remove(orderItem);
-                countDecr();
-            }
+    public void remove(UUID id) {
+        Optional<OrderItemDto> first = orderItems.stream().filter(dto -> dto.getProduct().getId().equals(id)).findFirst();
+        OrderItemDto orderItemDto = first.orElseThrow(() -> new ServerException("Error happens during removing from the cart!"));
+        if(orderItemDto.getQty()>1) {
+            orderItemDto.setQty(orderItemDto.getQty()-1);
+        } else {
+            orderItems.remove(orderItemDto);
         }
-        WeakReference reference = new WeakReference(orderItem);
         countPrice();
     }
 
     public void countPrice() {
         totalPrice = new BigDecimal(0);
-        for (OrderItem i : orderItems) {
+        for (OrderItemDto i : orderItems) {
             totalPrice = totalPrice.add(i.getProduct().getPrice().multiply(new BigDecimal(i.getQty())));
         }
-    }
-
-    private Integer countIncr(){
-       return ++counter;
-    }
-    private void countDecr() {
-        --counter;
     }
 
     public void clear() {
         orderItems.clear();
         totalPrice=new BigDecimal(0);
-        counter=0;
     }
 }
