@@ -44,7 +44,10 @@
         <div class="col-5">
             <div>
                 <p class="text-start display-6" th:text="${product.title}">Product title</p>
+                <p class="text-start" th:text="${product.category}">Product description</p>
                 <p class="text-start" th:text="${product.description}">Product description</p>
+                <p class="text-start" th:text="${product.inventory}">Product inventory</p>
+                <p class="text-start" th:text="${product.upc}">Product upc</p>
                 <ul>
                     <li th:each="attr:${product.attributes}" th:text="${attr.param.title} + ': ' + ${attr.value} + ' ' + ${attr.param.measure==null ? '' : attr.param.measure}">Attribute1: value Meas.</li>
                 </ul>

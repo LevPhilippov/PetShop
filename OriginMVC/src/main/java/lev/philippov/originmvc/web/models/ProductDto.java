@@ -1,24 +1,21 @@
 package lev.philippov.originmvc.web.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lev.philippov.originmvc.domain.product.structure.Attribute;
-import lev.philippov.originmvc.domain.product.structure.Category;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Version;
 import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 public class ProductDto{
+
+
 
     @Null
     UUID id;
@@ -35,7 +32,7 @@ public class ProductDto{
     private String upc;
     private String category;
     private Integer inventory;
-    private List<AttributeDto> attributes;
+    private List<AttributeDto> attributes = new ArrayList<>();
 
 
 

@@ -4,10 +4,13 @@ package lev.philippov.originmvc.services;
 import lev.philippov.originmvc.domain.product.structure.Product;
 import lev.philippov.originmvc.exceptions.ServerException;
 import lev.philippov.originmvc.repositories.CategoryRepository;
+import lev.philippov.originmvc.repositories.ParamRepository;
 import lev.philippov.originmvc.repositories.ProductRepository;
 import lev.philippov.originmvc.services.mappers.CategoryMapper;
+import lev.philippov.originmvc.services.mappers.ParamMapper;
 import lev.philippov.originmvc.services.mappers.ProductMapper;
 import lev.philippov.originmvc.web.models.CategoryDto;
+import lev.philippov.originmvc.web.models.ParamDto;
 import lev.philippov.originmvc.web.models.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,6 +34,8 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+    private final ParamRepository paramRepository;
+    private final ParamMapper paramMapper;
 
     public List<ProductDto> findAll(){
         return productRepository
@@ -87,5 +92,17 @@ public class ProductService {
     public List<ProductDto> findAllByIds(Collection<UUID> ids) {
         List<Product> products = productRepository.findAllById(ids);
         return products.stream().map(productMapper::productToProductDto).collect(Collectors.toList());
+    }
+
+    public List<ParamDto> findAllParams(){
+        return paramRepository.findAll().stream().map(paramMapper::paramToParamDto).collect(Collectors.toList());
+    }
+
+    public ParamDto getParamById(String paramId) {
+        return paramMapper.paramToParamDto(paramRepository.getById(UUID.fromString(paramId)));
+    }
+
+    public CategoryDto getCategoryById(String categoryId) {
+        return categoryMapper.categoryToCategoryDto(categoryRepository.findById(UUID.fromString(categoryId)).get());
     }
 }

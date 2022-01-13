@@ -1,14 +1,18 @@
 package lev.philippov.originmvc.web.controllers;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lev.philippov.originmvc.services.ProductService;
+import lev.philippov.originmvc.web.models.AttributeDto;
+import lev.philippov.originmvc.web.models.CategoryDto;
+import lev.philippov.originmvc.web.models.ParamDto;
 import lev.philippov.originmvc.web.models.ProductDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.SessionScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,9 +26,11 @@ import static lev.philippov.originmvc.utils.ProductsUtils.*;
 @Controller
 @RequestMapping("/admin/products")
 @RequiredArgsConstructor
+@SessionScope
 public class AdminProductController {
 
     private final ProductService productService;
+    private ProductDto productDto = new ProductDto();
 
     @RequestMapping(method = RequestMethod.GET)
     public String findAll(Model model, HttpServletRequest request,
@@ -52,11 +58,16 @@ public class AdminProductController {
                               HttpServletResponse response) {
         ProductDto product = productService.findById(productId);
         model.addAttribute("product", product);
+        model.addAttribute("categories", productService.findAllCategories());
         return "product_page";
     }
 
-    @GetMapping(path = "add")
+    @GetMapping(path = "/add")
     public String addNewProduct(Model model){
+        model.addAttribute("product", new ProductDto());
+        model.addAttribute("categories", productService.findAllCategories());
+        model.addAttribute("aparams",productService.findAllParams());
+        model.addAttribute("attribute", new AttributeDto());
         return "admin/edit_product_form";
     }
 
@@ -66,20 +77,53 @@ public class AdminProductController {
         productService.deleteProduct(id);
         response.sendRedirect(request.getHeader("referer"));
     }
+//    //при фильры можно хранить прямо в контроллере (как в JavaEE и xhtml) или отправлять/получать из поля в модели. Реализация удалена.
+//    @RequestMapping(method = RequestMethod.GET, path = "/edit/{id}")
+//    public String editProduct(@PathVariable(name = "id", required = false) UUID id,
+//                              Model model){
+//        ProductDto product = productService.findById(id);
+//        model.addAttribute("categories", productService.findAllCategories());
+//        model.addAttribute("product", product);
+//        return "admin/edit_product_form";
+//    }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/edit/{id}")
-    public String editProduct(@PathVariable(name = "id", required = false) UUID id,
-                              Model model){
-        ProductDto product = productService.findById(id);
-        model.addAttribute("product", product);
+    @RequestMapping(method = RequestMethod.POST, path = "/add/attribute")
+    public String addAttribute(@ModelAttribute(name = "attribute") AttributeDto attributeDto,
+                              HttpServletRequest request,
+                              Model model) throws JsonProcessingException {
+        Object paramId = request.getParameter("paramId");
+        if(paramId instanceof String) {
+            ParamDto param = productService.getParamById((String) paramId);
+            attributeDto.setParam(param);
+            this.productDto.getAttributes().add(attributeDto);
+        }
+        model.addAttribute("product", productDto);
+        model.addAttribute("categories", productService.findAllCategories());
+        model.addAttribute("aparams",productService.findAllParams());
+        model.addAttribute("attribute", new AttributeDto());
         return "admin/edit_product_form";
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/edit")
-    public void editProduct(@ModelAttribute(name = "product") ProductDto product,
-                            HttpServletResponse response,
-                            HttpServletRequest request) throws IOException {
-        productService.update(product);
-        response.sendRedirect(request.getContextPath() + "/admin/products");
+    @RequestMapping(method = RequestMethod.POST, path = "/add/confirm")
+    public String editProduct(@ModelAttribute(name = "product") ProductDto product, HttpServletRequest request,
+                            Model model){
+        Object category = request.getParameter("categoryId");
+        if(category instanceof String){
+            product.setCategory((String)category);
+        }
+        this.productDto = product;
+        model.addAttribute("product", productDto);
+        model.addAttribute("categories", productService.findAllCategories());
+        model.addAttribute("aparams",productService.findAllParams());
+        model.addAttribute("attribute", new AttributeDto());
+        return "admin/edit_product_form";
     }
+
+    @GetMapping(path = "/add/save")
+    public String save(){
+        productService.save(this.productDto);
+        this.productDto = new ProductDto();
+        return "redirect:/admin/products";
+    }
+
 }

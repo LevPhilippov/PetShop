@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS params(
-                                     id VARCHAR(36) NOT NULL,
+                                     id VARCHAR(36),
                                      title VARCHAR NOT NULL,
                                      measure VARCHAR(32),
                                      version INT NOT NULL DEFAULT 0,
@@ -19,7 +19,7 @@ INSERT INTO params (id, title, measure, version, created_at, updated_at ) VALUES
 
 
 CREATE TABLE IF NOT EXISTS categories(
-                                         id VARCHAR(36) NOT NULL,
+                                         id VARCHAR(36),
                                          title VARCHAR,
                                          description VARCHAR NOT NULL,
                                          version INT,
@@ -35,7 +35,7 @@ INSERT INTO categories(id, title, description, version, created_at, updated_at) 
 
 
 CREATE TABLE IF NOT EXISTS products(
-                                       id VARCHAR(36) NOT NULL,
+                                       id VARCHAR(36),
                                        title VARCHAR(32) NOT NULL,
                                        price DECIMAL NOT NULL,
                                        description VARCHAR NOT NULL,
@@ -55,7 +55,7 @@ INSERT INTO products(id, title, price, description, upc, category_id, version, c
 
 
 CREATE TABLE IF NOT EXISTS attributes(
-                                         id VARCHAR(36) NOT NULL,
+                                         id VARCHAR(36),
                                          value VARCHAR NOT NULL,
                                          param_id VARCHAR(36) NOT NULL,
                                          product_id VARCHAR(36) NOT NULL,
@@ -84,7 +84,7 @@ INSERT INTO attributes(id, value, param_id, product_id, version, created_at, upd
 ('f3dc1ac4-b072-47a4-8109-8e66071a8940', 'Extra Dry', '57d26cf7-7035-468f-8e9f-00eecc5b2699','ed3cd853-341d-40a4-975b-78e15d862bca',  0,CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 CREATE TABLE IF NOT EXISTS inventories(
-                                          id VARCHAR(36) NOT NULL,
+                                          id VARCHAR(36),
                                           qty INT NOT NULL DEFAULT 0,
                                           product_id VARCHAR(36) NOT NULL,
                                           version INT,

@@ -42,7 +42,7 @@
                         <a th:href="@{'/products'}" class="btn btn-dark" th:text="#{filters.reset}">Сбросить</a>
                     </div>
                     <div class="col-auto" sec:authorize="hasRole('ADMIN')">
-                        <a th:href="@{'/products/edit'}" class="btn btn-success" th:text="#{filters.add}">Добавить</a>
+                        <a th:href="@{/admin/products/add}" class="btn btn-success" th:text="#{filters.add}">Добавить</a>
                     </div>
                 </div>
             </div>
