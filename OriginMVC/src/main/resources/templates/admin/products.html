@@ -45,7 +45,7 @@
                 <tr th:each="product : ${productPage.content}">
                     <td th:text="${product.upc}">1234567889</td>
                     <td>
-                        <a th:text="${product.title}" th:href="@{'shop/' + ${product.id}}">Title</a>
+                        <a th:text="${product.title}" th:href="@{'/admin/products/' + ${product.id}}">Title</a>
                         <br>
                         <span class="text-muted" th:text="${product.description}">Description</span>
                     </td>

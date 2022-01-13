@@ -51,7 +51,7 @@
                         </td>
                         <td th:text="${product.price}">111</td>
                         <td>
-                            <a class="btn btn-dark" th:href="@{'/cart/add/' + ${product.id}}" th:text="#{shop.add}">Add to Cart</a>
+                            <a class="btn btn-dark" th:href="@{'/cart/add/' + ${product.id}}" th:text="#{shop.add}" sec:authorize="hasRole('USER') OR hasRole('ANONYMOUS') ">Add to Cart</a>
                         </td>
                     </tr>
                 </tbody>

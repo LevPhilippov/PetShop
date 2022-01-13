@@ -56,9 +56,9 @@ INSERT INTO products(id, title, price, description, upc, category_id, version, c
 
 CREATE TABLE IF NOT EXISTS attributes(
                                          id VARCHAR(36),
-                                         value VARCHAR NOT NULL,
-                                         param_id VARCHAR(36) NOT NULL,
-                                         product_id VARCHAR(36) NOT NULL,
+                                         value VARCHAR,
+                                         param_id VARCHAR(36),
+                                         product_id VARCHAR(36),
                                          version INT,
                                          created_at TIMESTAMP,
                                          updated_at TIMESTAMP,

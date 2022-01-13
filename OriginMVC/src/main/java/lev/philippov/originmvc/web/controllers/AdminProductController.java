@@ -77,15 +77,18 @@ public class AdminProductController {
         productService.deleteProduct(id);
         response.sendRedirect(request.getHeader("referer"));
     }
-//    //при фильры можно хранить прямо в контроллере (как в JavaEE и xhtml) или отправлять/получать из поля в модели. Реализация удалена.
-//    @RequestMapping(method = RequestMethod.GET, path = "/edit/{id}")
-//    public String editProduct(@PathVariable(name = "id", required = false) UUID id,
-//                              Model model){
-//        ProductDto product = productService.findById(id);
-//        model.addAttribute("categories", productService.findAllCategories());
-//        model.addAttribute("product", product);
-//        return "admin/edit_product_form";
-//    }
+
+    //при фильры можно хранить прямо в контроллере (как в JavaEE и xhtml) или отправлять/получать из поля в модели. Реализация удалена.
+    @RequestMapping(method = RequestMethod.GET, path = "/edit/{id}")
+    public String editProduct(@PathVariable(name = "id") UUID id,
+                              Model model){
+        this.productDto = productService.findById(id);
+        model.addAttribute("product", productDto);
+        model.addAttribute("categories", productService.findAllCategories());
+        model.addAttribute("aparams",productService.findAllParams());
+        model.addAttribute("attribute", new AttributeDto());
+        return "admin/edit_product_form";
+    }
 
     @RequestMapping(method = RequestMethod.POST, path = "/add/attribute")
     public String addAttribute(@ModelAttribute(name = "attribute") AttributeDto attributeDto,

@@ -16,7 +16,7 @@ public class Attribute extends BaseEntity {
 
     private String value;
 
-    @OneToOne
+    @ManyToOne(cascade ={CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "param_id")
     private Param param;
 
