@@ -2,6 +2,7 @@ package lev.philippov.originmvc.services.mappers;
 
 import lev.philippov.originmvc.domain.product.structure.Product;
 import lev.philippov.originmvc.web.models.ProductDto;
+import lev.philippov.originmvc.web.models.ShopPageProductDto;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -17,5 +18,5 @@ public interface ProductMapper {
     @InheritInverseConfiguration
     Product productDtoToProduct(ProductDto productDto);
 
-
+    ShopPageProductDto productToShopPageProductDto(Product product);
 }

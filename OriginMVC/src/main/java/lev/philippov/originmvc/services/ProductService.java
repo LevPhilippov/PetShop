@@ -12,6 +12,7 @@ import lev.philippov.originmvc.services.mappers.ProductMapper;
 import lev.philippov.originmvc.web.models.CategoryDto;
 import lev.philippov.originmvc.web.models.ParamDto;
 import lev.philippov.originmvc.web.models.ProductDto;
+import lev.philippov.originmvc.web.models.ShopPageProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -49,13 +50,13 @@ public class ProductService {
         return categoryRepository.findAll().stream().map(categoryMapper::categoryToCategoryDto).collect(Collectors.toList());
     }
 
-    public Page<ProductDto> findFiltered(Integer pageNbr, Map<String, String> params,Integer pageSize) {
+    public Page<ShopPageProductDto> findFiltered(Integer pageNbr, Map<String, String> params, Integer pageSize) {
         final int pageSize1 = pageSize != null ? pageSize : DEFAULT_PAGE_SIZE;
         PageRequest pageRequest = PageRequest.of(pageNbr, pageSize1, Sort.by(Sort.Direction.ASC, "title"));
         Page<Product> productPage = productRepository.findAll(buildProductSpecification(params), pageRequest);
-        List<ProductDto> productDtos = productPage.getContent()
-                .stream().map(productMapper::productToProductDto).collect(Collectors.toList());
-        return new PageImpl<ProductDto>(productDtos,pageRequest,productPage.getTotalElements());
+        List<ShopPageProductDto> productDtos = productPage.getContent()
+                .stream().map(productMapper::productToShopPageProductDto).collect(Collectors.toList());
+        return new PageImpl<ShopPageProductDto>(productDtos,pageRequest,productPage.getTotalElements());
     }
 
     @Transactional

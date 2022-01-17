@@ -6,6 +6,7 @@ import lev.philippov.originmvc.domain.product.structure.Product;
 import lev.philippov.originmvc.repositories.CategoryRepository;
 import lev.philippov.originmvc.web.models.AttributeDto;
 import lev.philippov.originmvc.web.models.ProductDto;
+import lev.philippov.originmvc.web.models.ShopPageProductDto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,17 @@ public class ProductMapperDecorator implements ProductMapper {
         inv.setProduct(product);
         product.setInventories(List.of(inv));
         return product;
+    }
+
+    @Override
+    public ShopPageProductDto productToShopPageProductDto(Product product) {
+        ShopPageProductDto dto = new ShopPageProductDto();
+        dto.setId(product.getId());
+        dto.setTitle(product.getTitle());
+        dto.setPrice(product.getPrice());
+        dto.setDescription(product.getDescription());
+        dto.setUpc(product.getUpc());
+        dto.setInventory(product.getInventories().stream().mapToInt(Inventory::getQty).sum());
+        return dto;
     }
 }

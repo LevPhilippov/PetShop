@@ -3,10 +3,7 @@ package lev.philippov.originmvc.web.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lev.philippov.originmvc.services.ProductService;
-import lev.philippov.originmvc.web.models.AttributeDto;
-import lev.philippov.originmvc.web.models.CategoryDto;
-import lev.philippov.originmvc.web.models.ParamDto;
-import lev.philippov.originmvc.web.models.ProductDto;
+import lev.philippov.originmvc.web.models.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -45,7 +42,7 @@ public class AdminProductController {
 
         Map<String, String> params = parseFilters(request);
         String filters = parseFiltersMapToString(params);
-        Page<ProductDto> products = productService.findFiltered(pageNbr, params, (Integer) session.getAttribute("pageSize"));
+        Page<ShopPageProductDto> products = productService.findFiltered(pageNbr, params, (Integer) session.getAttribute("pageSize"));
 
         model.addAttribute("categories", productService.findAllCategories());
         model.addAttribute("productPage", products);

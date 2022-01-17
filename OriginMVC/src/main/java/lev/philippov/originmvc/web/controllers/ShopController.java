@@ -2,6 +2,7 @@ package lev.philippov.originmvc.web.controllers;
 
 import lev.philippov.originmvc.services.ProductService;
 import lev.philippov.originmvc.web.models.ProductDto;
+import lev.philippov.originmvc.web.models.ShopPageProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -39,7 +40,7 @@ public class ShopController {
 
         Map<String, String> params = parseFilters(request);
         String filters = parseFiltersMapToString(params);
-        Page<ProductDto> products = productService.findFiltered(pageNbr, params, (Integer) session.getAttribute("pageSize"));
+        Page<ShopPageProductDto> products = productService.findFiltered(pageNbr, params, (Integer) session.getAttribute("pageSize"));
 
         putProductsFromCookiesToAModel(request, model);
         model.addAttribute("categories", productService.findAllCategories());
