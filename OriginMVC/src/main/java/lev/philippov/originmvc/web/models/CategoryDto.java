@@ -5,12 +5,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Null;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-public class CategoryDto{
+public class CategoryDto implements Serializable {
 
     @Null
     UUID id;

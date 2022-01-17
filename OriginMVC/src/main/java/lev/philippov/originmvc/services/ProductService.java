@@ -13,6 +13,7 @@ import lev.philippov.originmvc.web.models.CategoryDto;
 import lev.philippov.originmvc.web.models.ParamDto;
 import lev.philippov.originmvc.web.models.ProductDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +44,7 @@ public class ProductService {
                 .map(productMapper::productToProductDto)
                 .collect(Collectors.toList());
     }
-
+    @Cacheable(cacheNames = {"categoryCache"})
     public List<CategoryDto> findAllCategories(){
         return categoryRepository.findAll().stream().map(categoryMapper::categoryToCategoryDto).collect(Collectors.toList());
     }
@@ -93,7 +94,7 @@ public class ProductService {
         List<Product> products = productRepository.findAllById(ids);
         return products.stream().map(productMapper::productToProductDto).collect(Collectors.toList());
     }
-
+    @Cacheable(cacheNames = {"paramsCache"})
     public List<ParamDto> findAllParams(){
         return paramRepository.findAll().stream().map(paramMapper::paramToParamDto).collect(Collectors.toList());
     }
